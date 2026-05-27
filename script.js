@@ -7,6 +7,10 @@ let startX = 0;
 
 let currentRotation = 0;
 
+let isOpened = false;
+
+/* EVENTOS */
+
 rightPack.addEventListener("mousedown", startDrag);
 window.addEventListener("mousemove", drag);
 window.addEventListener("mouseup", stopDrag);
@@ -15,7 +19,12 @@ rightPack.addEventListener("touchstart", startDrag);
 window.addEventListener("touchmove", drag);
 window.addEventListener("touchend", stopDrag);
 
+/* START */
+
 function startDrag(e){
+
+  // SI YA ESTÁ ABIERTO → NO HACER NADA
+  if(isOpened) return;
 
   isDragging = true;
 
@@ -23,6 +32,8 @@ function startDrag(e){
 
   rightPack.style.transition = "none";
 }
+
+/* DRAG */
 
 function drag(e){
 
@@ -40,22 +51,34 @@ function drag(e){
   updatePack(move);
 }
 
+/* STOP */
+
 function stopDrag(){
+
+  if(!isDragging) return;
 
   isDragging = false;
 
   rightPack.style.transition = "0.4s ease";
 
-  // SI abrió suficiente
+  // SI ABRIÓ SUFICIENTE
   if(currentRotation > 70){
 
     updatePack(140);
+
+    // QUEDA ABIERTO PARA SIEMPRE
+    isOpened = true;
+
+    // cambia cursor
+    rightPack.style.cursor = "default";
 
   }else{
 
     updatePack(0);
   }
 }
+
+/* ACTUALIZAR */
 
 function updatePack(move){
 
@@ -68,6 +91,8 @@ function updatePack(move){
 
   inside.style.width = `${move * 0.9}px`;
 }
+
+/* UTILIDAD */
 
 function getX(e){
 
