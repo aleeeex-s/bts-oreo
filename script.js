@@ -1,80 +1,79 @@
-const tearStrip = document.getElementById("tearStrip");
+const rightPack = document.getElementById("rightPack");
 const inside = document.querySelector(".inside");
 
 let isDragging = false;
 
-let startY = 0;
-let currentMove = 0;
+let startX = 0;
 
-let isOpen = false;
+let currentRotation = 0;
 
-tearStrip.addEventListener("mousedown", startDrag);
+rightPack.addEventListener("mousedown", startDrag);
 window.addEventListener("mousemove", drag);
 window.addEventListener("mouseup", stopDrag);
 
-tearStrip.addEventListener("touchstart", startDrag);
+rightPack.addEventListener("touchstart", startDrag);
 window.addEventListener("touchmove", drag);
 window.addEventListener("touchend", stopDrag);
 
 function startDrag(e){
 
-  if(isOpen) return;
-
   isDragging = true;
 
-  startY = getY(e);
+  startX = getX(e);
 
-  tearStrip.style.transition = "none";
+  rightPack.style.transition = "none";
 }
 
 function drag(e){
 
   if(!isDragging) return;
 
-  let currentY = getY(e);
+  let currentX = getX(e);
 
-  currentMove = currentY - startY;
+  let move = currentX - startX;
 
-  if(currentMove < 0) currentMove = 0;
-  if(currentMove > 220) currentMove = 220;
+  if(move < 0) move = 0;
+  if(move > 140) move = 140;
 
-  updatePack(currentMove);
+  currentRotation = move;
+
+  updatePack(move);
 }
 
 function stopDrag(){
 
-  if(!isDragging) return;
-
   isDragging = false;
 
-  tearStrip.style.transition = "0.4s ease";
+  rightPack.style.transition = "0.4s ease";
 
-  if(currentMove > 120){
+  // SI abrió suficiente
+  if(currentRotation > 70){
 
-    currentMove = 220;
-    isOpen = true;
+    updatePack(140);
 
   }else{
 
-    currentMove = 0;
+    updatePack(0);
   }
-
-  updatePack(currentMove);
 }
 
 function updatePack(move){
 
-  tearStrip.style.transform =
-    `translateY(${move}px)`;
+  let rotate = move * -0.6;
 
-  inside.style.height = `${move}px`;
+  rightPack.style.transform =
+    `perspective(1200px)
+     rotateY(${rotate}deg)
+     translateX(${move * 0.35}px)`;
+
+  inside.style.width = `${move * 0.9}px`;
 }
 
-function getY(e){
+function getX(e){
 
   if(e.touches){
-    return e.touches[0].clientY;
+    return e.touches[0].clientX;
   }
 
-  return e.clientY;
+  return e.clientX;
 }
