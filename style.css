@@ -5,13 +5,22 @@
 }
 
 body{
-  background:#0d0d16;
+  background:#050510;
   height:100vh;
   display:flex;
   justify-content:center;
   align-items:center;
   overflow:hidden;
+  font-family:sans-serif;
 }
+
+/* ESCENA */
+
+.scene{
+  perspective:1400px;
+}
+
+/* CONTENEDOR */
 
 .pack-container{
   position:relative;
@@ -19,31 +28,40 @@ body{
   height:420px;
 }
 
-.full-pack{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  display:block;
-}
+/* BASE */
 
-/* SOLAPA */
-
-.tear-strip{
+.pack{
   position:absolute;
-
   top:0;
-  right:0;
-
-  width:85px;
   height:100%;
 
   background-image:url("oreo-pack.png");
   background-size:700px 420px;
+  background-repeat:no-repeat;
+}
+
+/* IZQUIERDA */
+
+.left-pack{
+  left:0;
+  width:78%;
+  background-position:left center;
+  z-index:2;
+}
+
+/* DERECHA */
+
+.right-pack{
+  right:0;
+
+  width:22%;
   background-position:right center;
 
-  cursor:grab;
+  transform-origin:left center;
 
-  z-index:5;
+  z-index:4;
+
+  cursor:grab;
 }
 
 /* INTERIOR */
@@ -51,22 +69,27 @@ body{
 .inside{
   position:absolute;
 
-  top:0;
-  right:0;
+  top:20px;
+  bottom:20px;
 
-  width:85px;
-  height:0%;
+  right:18%;
+
+  width:0px;
+
+  border-radius:20px;
 
   background:
-    linear-gradient(
-      to bottom,
-      rgba(15,15,30,1),
-      rgba(0,0,0,1)
-    );
+  radial-gradient(
+    circle at center,
+    rgba(45,45,80,0.9),
+    rgba(5,5,10,1)
+  );
 
-  z-index:2;
+  z-index:1;
 
   box-shadow:
-    inset 0 0 30px rgba(0,0,0,0.8),
-    0 0 20px rgba(80,80,255,0.3);
+    inset 0 0 40px rgba(0,0,0,0.9),
+    0 0 40px rgba(80,80,255,0.25);
+
+  transition:0.1s;
 }
