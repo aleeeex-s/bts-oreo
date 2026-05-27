@@ -1,18 +1,18 @@
-const rightPack = document.getElementById("rightPack");
+const tearStrip = document.getElementById("tearStrip");
 const inside = document.querySelector(".inside");
 
 let isDragging = false;
 
-let startX = 0;
+let startY = 0;
 let currentMove = 0;
 
 let isOpen = false;
 
-rightPack.addEventListener("mousedown", startDrag);
+tearStrip.addEventListener("mousedown", startDrag);
 window.addEventListener("mousemove", drag);
 window.addEventListener("mouseup", stopDrag);
 
-rightPack.addEventListener("touchstart", startDrag);
+tearStrip.addEventListener("touchstart", startDrag);
 window.addEventListener("touchmove", drag);
 window.addEventListener("touchend", stopDrag);
 
@@ -22,21 +22,21 @@ function startDrag(e){
 
   isDragging = true;
 
-  startX = getX(e);
+  startY = getY(e);
 
-  rightPack.style.transition = "none";
+  tearStrip.style.transition = "none";
 }
 
 function drag(e){
 
   if(!isDragging) return;
 
-  let currentX = getX(e);
+  let currentY = getY(e);
 
-  currentMove = currentX - startX;
+  currentMove = currentY - startY;
 
   if(currentMove < 0) currentMove = 0;
-  if(currentMove > 180) currentMove = 180;
+  if(currentMove > 220) currentMove = 220;
 
   updatePack(currentMove);
 }
@@ -47,12 +47,11 @@ function stopDrag(){
 
   isDragging = false;
 
-  rightPack.style.transition = "0.4s ease";
+  tearStrip.style.transition = "0.4s ease";
 
-  // SI abrió suficiente
-  if(currentMove > 90){
+  if(currentMove > 120){
 
-    currentMove = 180;
+    currentMove = 220;
     isOpen = true;
 
   }else{
@@ -65,17 +64,17 @@ function stopDrag(){
 
 function updatePack(move){
 
-  rightPack.style.transform =
-    `translateX(${move}px) rotate(${move * 0.05}deg)`;
+  tearStrip.style.transform =
+    `translateY(${move}px)`;
 
-  inside.style.opacity = move / 100;
+  inside.style.height = `${move}px`;
 }
 
-function getX(e){
+function getY(e){
 
   if(e.touches){
-    return e.touches[0].clientX;
+    return e.touches[0].clientY;
   }
 
-  return e.clientX;
+  return e.clientY;
 }
