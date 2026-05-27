@@ -11,14 +11,6 @@ body{
   justify-content:center;
   align-items:center;
   overflow:hidden;
-  font-family:sans-serif;
-}
-
-.scene{
-  width:100%;
-  display:flex;
-  justify-content:center;
-  align-items:center;
 }
 
 .pack-container{
@@ -27,51 +19,54 @@ body{
   height:420px;
 }
 
-.pack{
-  position:absolute;
-  top:0;
+.full-pack{
+  width:100%;
   height:100%;
+  object-fit:cover;
+  display:block;
+}
+
+/* SOLAPA */
+
+.tear-strip{
+  position:absolute;
+
+  top:0;
+  right:0;
+
+  width:85px;
+  height:100%;
+
   background-image:url("oreo-pack.png");
   background-size:700px 420px;
-  background-repeat:no-repeat;
-}
-
-.left{
-  left:0;
-  width:75%;
-  background-position:left center;
-  z-index:2;
-}
-
-.right{
-  right:0;
-  width:25%;
   background-position:right center;
-  z-index:3;
+
   cursor:grab;
-  transition:transform 0.1s;
+
+  z-index:5;
 }
+
+/* INTERIOR */
 
 .inside{
   position:absolute;
-  top:20px;
-  bottom:20px;
-  left:72%;
-  width:120px;
+
+  top:0;
+  right:0;
+
+  width:85px;
+  height:0%;
 
   background:
-    radial-gradient(circle at center,
-    rgba(64,64,90,0.8),
-    rgba(10,10,20,1));
+    linear-gradient(
+      to bottom,
+      rgba(15,15,30,1),
+      rgba(0,0,0,1)
+    );
 
-  border-radius:20px;
-
-  opacity:0;
-
-  transition:opacity 0.3s;
-  z-index:1;
+  z-index:2;
 
   box-shadow:
-    inset 0 0 40px rgba(0,0,0,0.9),
-    0 0 30px rgba(80,80,255,0.3);
+    inset 0 0 30px rgba(0,0,0,0.8),
+    0 0 20px rgba(80,80,255,0.3);
 }
