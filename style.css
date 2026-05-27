@@ -83,8 +83,8 @@ body::before{
   background-repeat:no-repeat;
 
   filter:
-  drop-shadow(0 0 15px rgba(120,80,255,0.25))
-  drop-shadow(0 0 30px rgba(80,120,255,0.15));
+    drop-shadow(0 0 15px rgba(120,80,255,0.25))
+    drop-shadow(0 0 30px rgba(80,120,255,0.15));
 }
 
 /* IZQUIERDA */
@@ -92,7 +92,7 @@ body::before{
 .left-pack{
   left:0;
 
-  width:78%;
+  width:79%;
 
   background-position:left center;
 
@@ -102,9 +102,9 @@ body::before{
 /* DERECHA */
 
 .right-pack{
-  right:0;
+  right:-3px;
 
-  width:22%;
+  width:23%;
 
   background-position:right center;
 
@@ -132,12 +132,12 @@ body::before{
   border-radius:18px;
 
   background:
-  linear-gradient(
-    to right,
-    rgba(130,70,255,0.08),
-    rgba(90,40,255,0.12),
-    rgba(255,255,255,0.03)
-  );
+    linear-gradient(
+      to right,
+      rgba(130,70,255,0.08),
+      rgba(90,40,255,0.12),
+      rgba(255,255,255,0.03)
+    );
 
   z-index:1;
 
@@ -163,12 +163,12 @@ body::before{
   inset:0;
 
   background:
-  linear-gradient(
-    120deg,
-    transparent 0%,
-    rgba(255,255,255,0.08) 50%,
-    transparent 100%
-  );
+    linear-gradient(
+      120deg,
+      transparent 0%,
+      rgba(255,255,255,0.08) 50%,
+      transparent 100%
+    );
 
   opacity:0.45;
 
@@ -185,16 +185,16 @@ body::before{
   inset:-40px;
 
   background:
-  radial-gradient(
-    circle at 30% 30%,
-    rgba(180,120,255,0.12),
-    transparent 20%
-  ),
-  radial-gradient(
-    circle at 70% 60%,
-    rgba(100,150,255,0.10),
-    transparent 25%
-  );
+    radial-gradient(
+      circle at 30% 30%,
+      rgba(180,120,255,0.12),
+      transparent 20%
+    ),
+    radial-gradient(
+      circle at 70% 60%,
+      rgba(100,150,255,0.10),
+      transparent 25%
+    );
 
   filter:blur(30px);
 
