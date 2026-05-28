@@ -17,8 +17,8 @@ body{
 
   background-image:
     linear-gradient(
-      rgba(5,5,15,0.7),
-      rgba(5,5,15,0.9)
+      rgba(5,5,15,0.55),
+      rgba(5,5,15,0.75)
     ),
     url("Fondo.jpg");
 
@@ -28,7 +28,7 @@ body{
   position:relative;
 }
 
-/* GLOW AMBIENTAL */
+/* GLOW */
 
 body::before{
   content:"";
@@ -41,7 +41,7 @@ body::before{
   background:
     radial-gradient(
       circle,
-      rgba(130,70,255,0.25),
+      rgba(130,70,255,0.22),
       transparent 70%
     );
 
@@ -52,11 +52,158 @@ body::before{
   animation:pulse 6s infinite alternate;
 }
 
+/* LOGIN */
+
+.login-screen{
+  position:absolute;
+
+  inset:0;
+
+  display:flex;
+  justify-content:center;
+  align-items:center;
+
+  z-index:10;
+
+  backdrop-filter:blur(10px);
+
+  transition:1s;
+}
+
+.login-box{
+  width:360px;
+
+  padding:40px;
+
+  border-radius:28px;
+
+  background:
+  rgba(255,255,255,0.05);
+
+  border:
+  1px solid rgba(255,255,255,0.1);
+
+  backdrop-filter:blur(20px);
+
+  box-shadow:
+    0 0 40px rgba(130,70,255,0.25);
+
+  text-align:center;
+}
+
+.login-box h1{
+  color:white;
+
+  font-size:38px;
+
+  margin-bottom:10px;
+
+  letter-spacing:4px;
+}
+
+.login-box p{
+  color:
+  rgba(255,255,255,0.7);
+
+  margin-bottom:25px;
+
+  letter-spacing:2px;
+}
+
+.login-box input{
+  width:100%;
+
+  padding:16px;
+
+  border:none;
+
+  outline:none;
+
+  border-radius:16px;
+
+  background:
+  rgba(255,255,255,0.08);
+
+  color:white;
+
+  font-size:16px;
+
+  text-align:center;
+
+  margin-bottom:20px;
+
+  border:
+  1px solid rgba(180,120,255,0.25);
+
+  transition:0.3s;
+}
+
+.login-box input:focus{
+
+  box-shadow:
+  0 0 20px rgba(140,70,255,0.4);
+}
+
+.login-box button{
+  width:100%;
+
+  padding:15px;
+
+  border:none;
+
+  border-radius:16px;
+
+  background:
+  linear-gradient(
+    45deg,
+    rgba(120,70,255,0.9),
+    rgba(180,120,255,0.9)
+  );
+
+  color:white;
+
+  font-size:15px;
+
+  letter-spacing:2px;
+
+  cursor:pointer;
+
+  transition:0.3s;
+}
+
+.login-box button:hover{
+  transform:scale(1.03);
+
+  box-shadow:
+  0 0 25px rgba(140,70,255,0.45);
+}
+
+#errorText{
+  display:block;
+
+  margin-top:18px;
+
+  color:#ff6b9d;
+
+  font-size:14px;
+
+  height:20px;
+}
+
 /* ESCENA */
 
 .scene{
   perspective:1400px;
   z-index:2;
+
+  opacity:1;
+
+  transition:1.2s;
+}
+
+.hidden{
+  opacity:0;
+  pointer-events:none;
 }
 
 /* CONTENEDOR */
@@ -83,8 +230,8 @@ body::before{
   background-repeat:no-repeat;
 
   filter:
-    drop-shadow(0 0 15px rgba(120,80,255,0.25))
-    drop-shadow(0 0 30px rgba(80,120,255,0.15));
+  drop-shadow(0 0 15px rgba(120,80,255,0.35))
+  drop-shadow(0 0 40px rgba(80,120,255,0.2));
 }
 
 /* IZQUIERDA */
@@ -92,7 +239,7 @@ body::before{
 .left-pack{
   left:0;
 
-  width:79%;
+  width:78%;
 
   background-position:left center;
 
@@ -102,9 +249,9 @@ body::before{
 /* DERECHA */
 
 .right-pack{
-  right:-3px;
+  right:0;
 
-  width:23%;
+  width:22%;
 
   background-position:right center;
 
@@ -113,8 +260,6 @@ body::before{
   z-index:4;
 
   cursor:grab;
-
-  box-shadow:none;
 }
 
 /* INTERIOR */
@@ -132,28 +277,21 @@ body::before{
   border-radius:18px;
 
   background:
-    linear-gradient(
-      to right,
-      rgba(130,70,255,0.08),
-      rgba(90,40,255,0.12),
-      rgba(255,255,255,0.03)
-    );
+  linear-gradient(
+    to right,
+    rgba(170,100,255,0.15),
+    rgba(130,70,255,0.3),
+    rgba(90,40,255,0.45)
+  );
 
   z-index:1;
-
-  backdrop-filter:blur(4px);
-
-  box-shadow:
-    inset 0 0 20px rgba(255,255,255,0.04),
-    inset 0 0 25px rgba(130,70,255,0.08),
-    0 0 10px rgba(140,70,255,0.08);
 
   transition:0.1s;
 
   overflow:hidden;
-}
 
-/* BRILLO INTERNO */
+  backdrop-filter:blur(8px);
+}
 
 .inside::before{
   content:"";
@@ -163,19 +301,17 @@ body::before{
   inset:0;
 
   background:
-    linear-gradient(
-      120deg,
-      transparent 0%,
-      rgba(255,255,255,0.08) 50%,
-      transparent 100%
-    );
+  linear-gradient(
+    120deg,
+    transparent 0%,
+    rgba(255,255,255,0.25) 50%,
+    transparent 100%
+  );
 
-  opacity:0.45;
-
-  mix-blend-mode:screen;
+  opacity:0.8;
 }
 
-/* PARTÍCULAS SUAVES */
+/* PARTÍCULAS */
 
 .pack-container::before{
   content:"";
@@ -185,16 +321,16 @@ body::before{
   inset:-40px;
 
   background:
-    radial-gradient(
-      circle at 30% 30%,
-      rgba(180,120,255,0.12),
-      transparent 20%
-    ),
-    radial-gradient(
-      circle at 70% 60%,
-      rgba(100,150,255,0.10),
-      transparent 25%
-    );
+  radial-gradient(
+    circle at 30% 30%,
+    rgba(180,120,255,0.12),
+    transparent 20%
+  ),
+  radial-gradient(
+    circle at 70% 60%,
+    rgba(100,150,255,0.1),
+    transparent 25%
+  );
 
   filter:blur(30px);
 
