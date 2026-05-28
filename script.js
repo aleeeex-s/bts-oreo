@@ -15,6 +15,7 @@ const cookieElements = document.querySelectorAll(".cookie");
 /* ========================= */
 
 enterBtn.addEventListener("click", checkPassword);
+
 passwordInput.addEventListener("keydown", (e) => {
   if (e.key === "Enter") checkPassword();
 });
@@ -55,24 +56,7 @@ let currentRotation = 0;
 let isOpened = false;
 let cookieIndex = 0;
 
-/* ========================= */
-/* ESTADO FASE 3 PRO */
-/* ========================= */
-
-const cookieState = new Map();
-
-cookieElements.forEach((cookie) => {
-  cookieState.set(cookie, {
-    active: false,
-    points: [],
-    progress: 0,
-    opened: false
-  });
-});
-
-/* ========================= */
-/* DRAG PAQUETE */
-/* ========================= */
+/* DRAG */
 
 rightPack.addEventListener("mousedown", startDrag);
 window.addEventListener("mousemove", drag);
@@ -156,7 +140,7 @@ function getX(e) {
 }
 
 /* ========================= */
-/* SPAWN GALLETITAS */
+/* GALLETITAS (FIX REAL) */
 /* ========================= */
 
 leftPack.addEventListener("click", spawnCookie);
@@ -168,80 +152,7 @@ function spawnCookie() {
   const cookie = cookieElements[cookieIndex];
 
   cookie.classList.add("show");
+  cookie.classList.add(`pos${cookieIndex + 1}`);
 
   cookieIndex++;
-}
-
-/* ========================= */
-/* FASE 3 PRO - INTERACCIÓN CIRCULAR */
-/* ========================= */
-
-document.addEventListener("pointerdown", (e) => {
-  const el = document.elementFromPoint(e.clientX, e.clientY);
-
-  if (!el || !el.classList.contains("cookie")) return;
-
-  const state = cookieState.get(el);
-  if (!state) return;
-
-  state.active = true;
-  state.points = [];
-});
-
-document.addEventListener("pointermove", (e) => {
-  cookieState.forEach((state, cookie) => {
-    if (!state.active) return;
-
-    state.points.push({ x: e.clientX, y: e.clientY });
-
-    if (state.points.length > 10) {
-      detectCircularMotion(state, cookie);
-    }
-  });
-});
-
-document.addEventListener("pointerup", () => {
-  cookieState.forEach((state) => {
-    state.active = false;
-    state.points = [];
-  });
-});
-
-function detectCircularMotion(state, cookie) {
-  const pts = state.points;
-
-  const p1 = pts[0];
-  const p2 = pts[Math.floor(pts.length / 2)];
-  const p3 = pts[pts.length - 1];
-
-  const v1 = { x: p2.x - p1.x, y: p2.y - p1.y };
-  const v2 = { x: p3.x - p2.x, y: p3.y - p2.y };
-
-  const cross = v1.x * v2.y - v1.y * v2.x;
-  const movement = Math.hypot(v2.x, v2.y);
-
-  if (movement > 5) {
-    state.progress += Math.abs(cross) * 0.002;
-  }
-
-  state.progress = Math.min(state.progress, 1);
-
-  cookie.style.filter = `
-    brightness(${1 + state.progress * 0.6})
-    drop-shadow(0 0 ${state.progress * 20}px rgba(140,70,255,0.6))
-  `;
-
-  if (state.progress >= 1 && !state.opened) {
-    openCookie(cookie, state);
-  }
-}
-
-function openCookie(cookie, state) {
-  state.opened = true;
-
-  cookie.classList.add("opened");
-
-  cookie.style.transition = "0.6s ease";
-  cookie.style.transform = "scale(1.25)";
-  cookie.style.filter = "brightness(1.4)";
 }
