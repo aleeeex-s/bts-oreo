@@ -111,11 +111,32 @@ function stopDrag(){
 
     rightPack.style.cursor = "default";
 
-    /* ABRIR COMPLETO */
+    /* ABRE COMPLETO */
+
+    rightPack.style.transition =
+    "transform 0.28s ease-out";
 
     updatePack(150);
 
-    /* PEQUEÑA PAUSA */
+    /* SE DESPEGA */
+
+    setTimeout(()=>{
+
+      rightPack.style.transition =
+      "transform 0.42s cubic-bezier(.2,.9,.2,1)";
+
+      rightPack.style.transform =
+      `
+        perspective(2200px)
+        rotateY(-102deg)
+        rotateZ(10deg)
+        translateX(35px)
+        translateY(20px)
+      `;
+
+    },180);
+
+    /* CAE */
 
     setTimeout(()=>{
 
@@ -124,13 +145,13 @@ function stopDrag(){
       rightPack.style.transform =
       `
         perspective(2200px)
-        rotateY(-95deg)
-        rotateZ(28deg)
-        translateX(120px)
-        translateY(520px)
+        rotateY(-120deg)
+        rotateZ(42deg)
+        translateX(160px)
+        translateY(850px)
       `;
 
-    },120);
+    },620);
 
   }else{
 
