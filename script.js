@@ -158,13 +158,13 @@ function stopDrag(){
 
       rightPack.classList.add("falling");
 
-      rightPack.style.transform =
-      `
-        rotateY(0deg)
-        rotateZ(72deg)
-        translateX(120px)
-        translateY(980px)
-      `;
+rightPack.style.transform =
+`
+  rotateY(0deg)
+  rotateZ(18deg)
+  translateX(35px)
+  translateY(980px)
+`;
 
       /* DESAPARECE DESPUÉS DE CAER */
 
