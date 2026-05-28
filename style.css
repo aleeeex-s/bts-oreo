@@ -18,7 +18,6 @@ body{
 
   background-size:cover;
   background-position:center;
-  position:relative;
 }
 
 /* LOGIN */
@@ -82,7 +81,6 @@ body{
 /* ESCENA */
 .scene{
   perspective:1800px;
-  z-index:2;
 }
 
 .hidden{
@@ -90,27 +88,24 @@ body{
   pointer-events:none;
 }
 
-/* CONTENEDOR */
+/* PACK */
 .pack-container{
   position:relative;
   width:700px;
   height:420px;
-  overflow:visible;
   margin:0 auto;
-  animation:float 5s ease-in-out infinite;
+  overflow:visible;
 }
 
-/* PACK */
 .pack{
   position:absolute;
   top:0;
   height:100%;
   background-image:url("oreo-pack.png");
   background-size:700px 420px;
-  background-repeat:no-repeat;
 }
 
-/* IZQUIERDA */
+/* IZQ */
 .left-pack{
   left:0;
   width:646px;
@@ -118,7 +113,7 @@ body{
   z-index:2;
 }
 
-/* DERECHA */
+/* DER */
 .right-pack{
   right:0;
   width:54px;
@@ -126,21 +121,20 @@ body{
   z-index:4;
 }
 
-/* INTERIOR */
+/* INSIDE */
 .inside{
   position:absolute;
   top:28px;
   bottom:28px;
   right:46px;
   width:0px;
-  border-radius:12px;
   background:linear-gradient(to right, rgba(28,15,55,0.96), rgba(65,35,120,0.96));
   z-index:1;
-  transition:width 0.08s linear, opacity 0.08s linear;
   opacity:0.25;
+  transition:width 0.08s linear, opacity 0.08s linear;
 }
 
-/* GALLETITAS */
+/* COOKIES */
 .cookies{
   position:absolute;
   top:50%;
@@ -148,43 +142,30 @@ body{
   width:300px;
   height:300px;
   transform:translateY(-50%);
-  overflow:visible;
   z-index:6;
-  pointer-events:none;
 }
 
-/* COOKIE BASE (IMPORTANTE: NEUTRA) */
+/* COOKIE BASE */
 .cookie{
   position:absolute;
-
   width:155px;
-
   right:0;
   top:50%;
-
   opacity:0;
 
-  /* 🔥 FIX CLAVE: no interferir con posX */
   transform:translateY(-50%) scale(0.7);
 
-  transition:
-    transform 0.9s cubic-bezier(.22,1,.36,1),
-    opacity 0.5s ease;
-
-  filter:
-    drop-shadow(0 14px 20px rgba(0,0,0,0.45))
-    drop-shadow(0 0 14px rgba(140,70,255,0.2));
-
-  pointer-events:none;
+  transition:transform 0.6s ease, opacity 0.5s ease;
+  cursor:pointer;
+  user-select:none;
+  touch-action:none;
 }
 
-/* SHOW */
 .cookie.show{
   opacity:1;
 }
 
-/* POSICIONES (TU SISTEMA ORIGINAL INTACTO) */
-
+/* POSICIONES (INTACTAS) */
 .cookie.pos1{ transform: translate(-762px,-50%) rotate(-8deg) scale(1); }
 .cookie.pos2{ transform: translate(-622px,-50%) rotate(5deg) scale(1); }
 .cookie.pos3{ transform: translate(-482px,-50%) rotate(-5deg) scale(1); }
@@ -194,15 +175,43 @@ body{
 .cookie.pos7{ transform: translate(78px,-50%) rotate(-5deg) scale(1); }
 .cookie.pos8{ transform: translate(218px,-50%) rotate(5deg) scale(1); }
 
-/* ANIMACIONES */
-@keyframes float{
-  0%{ transform:translateY(0px); }
-  50%{ transform:translateY(-8px); }
-  100%{ transform:translateY(0px); }
+/* FASE 4 */
+.cookie.open{
+  z-index:10;
 }
 
-.cookie{
-  cursor:pointer;
-  user-select:none;
-  touch-action:none;
+.cookie.open::after{
+  content:"";
+  position:absolute;
+  inset:25%;
+  background:radial-gradient(circle, #f6d36b, #d8a94a);
+  border-radius:50%;
+  opacity:0.9;
+  animation:creamPop 0.4s ease forwards;
+}
+
+.cookie-text{
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  color:white;
+  font-size:13px;
+  text-align:center;
+  opacity:0;
+  animation:textIn 0.4s ease forwards;
+}
+
+.cookie.open .cookie-text{
+  opacity:1;
+}
+
+@keyframes creamPop{
+  from{ transform:scale(0.3); opacity:0; }
+  to{ transform:scale(1); opacity:1; }
+}
+
+@keyframes textIn{
+  from{ transform:translate(-50%,-50%) scale(0.5); opacity:0; }
+  to{ transform:translate(-50%,-50%) scale(1); opacity:1; }
 }
