@@ -348,7 +348,7 @@ body::after{
 
   top:50%;
 
-  left:0;
+  right:0;
 
   width:1500px;
 
@@ -361,12 +361,14 @@ body::after{
   pointer-events:none;
 }
 
+/* GALLETITA */
+
 .cookie{
   position:absolute;
 
   width:155px;
 
-  left:0;
+  right:40px;
 
   top:50%;
 
@@ -394,59 +396,60 @@ body::after{
 }
 
 /* POSICIONES */
+/* salen desde la derecha y se acomodan hacia la izquierda */
 
 .cookie.pos1{
   transform:
-    translate(-260px,-50%)
+    translate(-820px,-50%)
     rotate(-8deg)
     scale(1);
 }
 
 .cookie.pos2{
   transform:
-    translate(-110px,-50%)
+    translate(-680px,-50%)
     rotate(5deg)
     scale(1);
 }
 
 .cookie.pos3{
   transform:
-    translate(40px,-50%)
+    translate(-540px,-50%)
     rotate(-5deg)
     scale(1);
 }
 
 .cookie.pos4{
   transform:
-    translate(190px,-50%)
+    translate(-400px,-50%)
     rotate(5deg)
     scale(1);
 }
 
 .cookie.pos5{
   transform:
-    translate(340px,-50%)
+    translate(-260px,-50%)
     rotate(-5deg)
     scale(1);
 }
 
 .cookie.pos6{
   transform:
-    translate(490px,-50%)
+    translate(-120px,-50%)
     rotate(5deg)
     scale(1);
 }
 
 .cookie.pos7{
   transform:
-    translate(640px,-50%)
+    translate(20px,-50%)
     rotate(-5deg)
     scale(1);
 }
 
 .cookie.pos8{
   transform:
-    translate(790px,-50%)
+    translate(160px,-50%)
     rotate(5deg)
     scale(1);
 }
