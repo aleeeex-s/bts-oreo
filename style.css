@@ -20,10 +20,7 @@ body{
   background-position:center;
 }
 
-/* ========================= */
-/* LOGIN MEJORADO */
-/* ========================= */
-
+/* LOGIN */
 .login-screen{
   position:absolute;
   inset:0;
@@ -31,115 +28,21 @@ body{
   justify-content:center;
   align-items:center;
   z-index:10;
-  backdrop-filter:blur(14px);
-  background:rgba(0,0,0,0.25);
+  backdrop-filter:blur(10px);
 }
 
 .login-box{
   width:360px;
-  padding:45px;
-  border-radius:30px;
-
-  background:rgba(255,255,255,0.06);
-  border:1px solid rgba(200,140,255,0.25);
-
-  backdrop-filter:blur(25px);
-
-  box-shadow:
-    0 0 50px rgba(140,70,255,0.35),
-    inset 0 0 25px rgba(255,255,255,0.05);
-
+  padding:40px;
+  border-radius:28px;
+  background:rgba(255,255,255,0.05);
+  border:1px solid rgba(255,255,255,0.1);
+  backdrop-filter:blur(20px);
+  box-shadow:0 0 40px rgba(130,70,255,0.25);
   text-align:center;
-
-  animation:loginIn 0.8s ease;
 }
 
-@keyframes loginIn{
-  from{
-    transform:scale(0.9);
-    opacity:0;
-  }
-  to{
-    transform:scale(1);
-    opacity:1;
-  }
-}
-
-.login-box h1{
-  color:white;
-  font-size:40px;
-  margin-bottom:10px;
-  letter-spacing:5px;
-}
-
-.login-box p{
-  color:rgba(255,255,255,0.75);
-  margin-bottom:25px;
-  letter-spacing:2px;
-}
-
-.login-box input{
-  width:100%;
-  padding:16px;
-
-  border-radius:16px;
-  border:1px solid rgba(180,120,255,0.3);
-
-  background:rgba(255,255,255,0.08);
-  color:white;
-
-  text-align:center;
-  font-size:15px;
-
-  outline:none;
-
-  transition:0.3s;
-}
-
-.login-box input:focus{
-  box-shadow:0 0 20px rgba(160,90,255,0.5);
-  transform:scale(1.02);
-}
-
-.login-box button{
-  width:100%;
-  padding:15px;
-  margin-top:10px;
-
-  border:none;
-  border-radius:16px;
-
-  background:linear-gradient(45deg,
-    rgba(120,70,255,0.95),
-    rgba(180,120,255,0.95)
-  );
-
-  color:white;
-  font-weight:bold;
-  letter-spacing:2px;
-
-  cursor:pointer;
-
-  transition:0.25s;
-}
-
-.login-box button:hover{
-  transform:scale(1.03);
-  box-shadow:0 0 25px rgba(160,90,255,0.5);
-}
-
-/* ERROR */
-#errorText{
-  display:block;
-  margin-top:15px;
-  color:#ff5f8f;
-  font-size:13px;
-}
-
-/* ========================= */
 /* ESCENA */
-/* ========================= */
-
 .scene{
   perspective:1800px;
 }
@@ -158,6 +61,7 @@ body{
   overflow:visible;
 }
 
+/* BASE PACK */
 .pack{
   position:absolute;
   top:0;
@@ -174,15 +78,16 @@ body{
   z-index:2;
 }
 
-/* DER */
+/* DER (ABERTURA) */
 .right-pack{
   right:0;
   width:54px;
   background-position:right center;
-  z-index:4;
+  z-index:5; /* 🔥 más alto */
+  cursor:pointer;
 }
 
-/* INSIDE */
+/* INTERIOR */
 .inside{
   position:absolute;
   top:28px;
@@ -195,7 +100,7 @@ body{
   transition:width 0.08s linear, opacity 0.08s linear;
 }
 
-/* COOKIES */
+/* GALLETITAS CONTENEDOR */
 .cookies{
   position:absolute;
   top:50%;
@@ -203,23 +108,19 @@ body{
   width:300px;
   height:300px;
   transform:translateY(-50%);
-  z-index:6;
+  z-index:3; /* 🔥 ABAJO del pack */
+  pointer-events:none; /* 🔥 CLAVE: no bloquea clicks */
 }
 
+/* COOKIE */
 .cookie{
   position:absolute;
   width:155px;
   right:0;
   top:50%;
   opacity:0;
-
   transform:translateY(-50%) scale(0.7);
-
   transition:transform 0.6s ease, opacity 0.5s ease;
-
-  cursor:pointer;
-  user-select:none;
-  touch-action:none;
 }
 
 .cookie.show{
@@ -239,40 +140,4 @@ body{
 /* FASE 4 */
 .cookie.open{
   z-index:10;
-}
-
-.cookie.open::after{
-  content:"";
-  position:absolute;
-  inset:25%;
-  background:radial-gradient(circle, #f6d36b, #d8a94a);
-  border-radius:50%;
-  opacity:0.9;
-  animation:creamPop 0.4s ease forwards;
-}
-
-.cookie-text{
-  position:absolute;
-  top:50%;
-  left:50%;
-  transform:translate(-50%,-50%);
-  color:white;
-  font-size:13px;
-  text-align:center;
-  opacity:0;
-  animation:textIn 0.4s ease forwards;
-}
-
-.cookie.open .cookie-text{
-  opacity:1;
-}
-
-@keyframes creamPop{
-  from{ transform:scale(0.3); opacity:0; }
-  to{ transform:scale(1); opacity:1; }
-}
-
-@keyframes textIn{
-  from{ transform:translate(-50%,-50%) scale(0.5); opacity:0; }
-  to{ transform:translate(-50%,-50%) scale(1); opacity:1; }
 }
