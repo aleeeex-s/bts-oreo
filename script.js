@@ -1,131 +1,64 @@
-const passwordInput =
-document.getElementById("passwordInput");
+const passwordInput = document.getElementById("passwordInput");
+const enterBtn = document.getElementById("enterBtn");
+const errorText = document.getElementById("errorText");
+const loginScreen = document.getElementById("loginScreen");
+const mainScene = document.getElementById("mainScene");
 
-const enterBtn =
-document.getElementById("enterBtn");
+const rightPack = document.getElementById("rightPack");
+const leftPack = document.querySelector(".left-pack");
+const inside = document.querySelector(".inside");
 
-const errorText =
-document.getElementById("errorText");
-
-const loginScreen =
-document.getElementById("loginScreen");
-
-const mainScene =
-document.getElementById("mainScene");
-
-const rightPack =
-document.getElementById("rightPack");
-
-const leftPack =
-document.querySelector(".left-pack");
-
-const inside =
-document.querySelector(".inside");
-
-const cookieElements =
-document.querySelectorAll(".cookie");
+const cookieElements = document.querySelectorAll(".cookie");
 
 /* ================================= */
 /* LOGIN */
 /* ================================= */
 
-enterBtn.addEventListener(
-"click",
-checkPassword
-);
+enterBtn.addEventListener("click", checkPassword);
 
-passwordInput.addEventListener(
-"keydown",
-e=>{
-if(e.key==="Enter"){
+passwordInput.addEventListener("keydown", e => {
+if(e.key === "Enter"){
 checkPassword();
 }
-}
-);
+});
 
 function checkPassword(){
 
-if(
-passwordInput.value
-.trim()
-.toUpperCase()
-=== "BTSXSIEMPRE"
-){
+  if(passwordInput.value === "BTSXSIEMPRE"){
 
-```
-loginScreen.classList.add(
-  "hide-login"
-);
+    loginScreen.style.opacity = "0";
+  // Pasamos a mayúsculas para evitar problemas con el tipeo
+  if(passwordInput.value.trim().toUpperCase() === "BTSXSIEMPRE"){
+    
+    // Agrega la clase que maneja la transición de opacidad
+    loginScreen.classList.add("hide-login");
 
 setTimeout(()=>{
 
-  loginScreen.style.display =
-  "none";
+loginScreen.style.display = "none";
 
-  mainScene.classList.remove(
-    "hidden"
-  );
+      // Muestra la escena principal quitando el display: none
+mainScene.classList.remove("hidden");
 
-},800);
-```
+    },800);
+    }, 800);
 
 }else{
 
-```
-errorText.innerText =
-"WRONG PASSWORD";
-```
+errorText.innerText = "WRONG PASSWORD";
 
 }
 }
 
-/* ================================= */
-/* PAQUETE */
-/* ================================= */
+@@ -61,29 +58,24 @@
+window.addEventListener("mousemove", drag);
+window.addEventListener("mouseup", stopDrag);
 
-let isDragging = false;
-
-let startX = 0;
-
-let move = 0;
-
-let isOpened = false;
-
-let cookieIndex = 0;
-
-/* EVENTOS */
-
-rightPack.addEventListener(
-"mousedown",
-startDrag
-);
-
-window.addEventListener(
-"mousemove",
-drag
-);
-
-window.addEventListener(
-"mouseup",
-stopDrag
-);
-
-rightPack.addEventListener(
-"touchstart",
-startDrag,
-{ passive:true }
-);
-
-window.addEventListener(
-"touchmove",
-drag,
-{ passive:false }
-);
-
-window.addEventListener(
-"touchend",
-stopDrag
-);
+rightPack.addEventListener("touchstart", startDrag);
+window.addEventListener("touchmove", drag);
+rightPack.addEventListener("touchstart", startDrag, {passive: true});
+window.addEventListener("touchmove", drag, {passive: false});
+window.addEventListener("touchend", stopDrag);
 
 /* START */
 
@@ -137,8 +70,7 @@ isDragging = true;
 
 startX = getX(e);
 
-rightPack.style.transition =
-"none";
+rightPack.style.transition = "none";
 }
 
 /* MOVE */
@@ -147,15 +79,11 @@ function drag(e){
 
 if(!isDragging) return;
 
+  
 move = getX(e) - startX;
 
 if(move < 0) move = 0;
-
-if(move > 60) move = 60;
-
-updatePack(move);
-}
-
+@@ -95,121 +87,84 @@
 /* END */
 
 function stopDrag(){
@@ -164,63 +92,68 @@ if(!isDragging) return;
 
 isDragging = false;
 
+/* ABRIR */
+
 if(move > 28){
 
-```
 isOpened = true;
 
-rightPack.style.transition =
-"transform .18s ease-out";
+/* APERTURA FINAL */
 
+    rightPack.style.transition =
+      "transform 0.18s ease-out";
+
+    rightPack.style.transition = "transform 0.18s ease-out";
 updatePack(60);
+
+/* DESPEGUE */
 
 setTimeout(()=>{
 
-  rightPack.style.transform =
-  `
-    rotateZ(10deg)
-    translateX(10px)
-    translateY(6px)
-  `;
+      rightPack.style.transform =
+      `
+      rightPack.style.transform = `
+       rotateZ(10deg)
+       translateX(10px)
+       translateY(6px)
+     `;
 
 },120);
 
+/* CAÍDA */
+
 setTimeout(()=>{
 
-  rightPack.style.transition =
-  `
-    transform 2s cubic-bezier(.16,.72,.2,1),
-    opacity .4s linear 1.5s
-  `;
+      rightPack.style.transition =
+      "transform 2s cubic-bezier(.16,.72,.2,1), opacity 0.4s linear 1.5s";
 
-  rightPack.style.transform =
-  `
-    rotateZ(25deg)
-    translateX(30px)
-    translateY(900px)
-  `;
+      rightPack.style.transform =
+      `
+      rightPack.style.transition = "transform 2s cubic-bezier(.16,.72,.2,1), opacity 0.4s linear 1.5s";
+      rightPack.style.transform = `
+       rotateZ(25deg)
+       translateX(30px)
+       translateY(900px)
+     `;
 
-  setTimeout(()=>{
+setTimeout(()=>{
 
-    rightPack.style.opacity = "0";
+rightPack.style.opacity = "0";
 
-    rightPack.style.display =
-    "none";
-
-  },1500);
+        rightPack.style.display = "none"; // Elimina el elemento para que no bloquee clicks
+},1500);
 
 },260);
-```
 
 }else{
 
-```
-rightPack.style.transition =
-"transform .35s ease";
+/* CERRAR */
 
+    rightPack.style.transition =
+      "transform 0.35s ease";
+
+    rightPack.style.transition = "transform 0.35s ease";
 updatePack(0);
-```
-
 }
 }
 
@@ -230,25 +163,33 @@ function updatePack(m){
 
 const rotate = m * -0.15;
 
-rightPack.style.transform =
-`     rotateZ(${rotate}deg)
-    translateX(${m * 0.08}px)
-  `;
+  rightPack.style.transform =
+  `
+  rightPack.style.transform = `
+   rotateZ(${rotate}deg)
+   translateX(${m * 0.08}px)
+ `;
 
-inside.style.width =
-`${m * 1.1}px`;
+  inside.style.width =
+    `${m * 1.1}px`;
 
-inside.style.opacity =
-0.2 + (m / 120);
+  inside.style.opacity =
+    0.2 + (m / 120);
+  if(inside) {
+    // Sincronizado en píxeles según tu diseño original
+    inside.style.width = `${m * 1.1}px`; 
+    inside.style.opacity = 0.2 + (m / 120);
+  }
 }
 
 /* GET X */
 
 function getX(e){
 
-return e.touches
-? e.touches[0].clientX
-: e.clientX;
+  return e.touches
+    ? e.touches[0].clientX
+    : e.clientX;
+  return e.touches ? e.touches[0].clientX : e.clientX;
 }
 
 /* ================================= */
@@ -256,56 +197,35 @@ return e.touches
 /* ================================= */
 
 leftPack.addEventListener(
-"click",
-spawnCookie
+  "click",
+  spawnCookie
 );
+leftPack.addEventListener("click", spawnCookie);
 
 function spawnCookie(){
 
 if(!isOpened) return;
+  if(cookieIndex >= cookieElements.length) return;
 
-if(cookieIndex >= cookieElements.length)
-return;
+  if(cookieIndex >= 8) return;
 
-const cookie =
-cookieElements[cookieIndex];
+  const cookie =
+    cookieElements[cookieIndex];
 
+  const cookie = cookieElements[cookieIndex];
 cookie.classList.add("show");
 
-cookie.classList.add(
-`pos${cookieIndex + 1}`
-);
+  cookie.classList.add(
+    `pos${cookieIndex + 1}`
+  );
+  cookie.classList.add(`pos${cookieIndex + 1}`);
 
 cookieIndex++;
 }
-
-/* ================================= */
-/* FASE 3 + 4 */
+@@ -220,111 +175,64 @@
 /* ================================= */
 
-const phrases = [
-
-"Dulce energía",
-
-"Golden hour",
-
-"Stay soft",
-
-"Purple soul",
-
-"Shine more",
-
-"Sweet vibes",
-
-"BTS forever",
-
-"Enjoy moment"
-];
-
-/* CADA GALLETITA */
-
-cookieElements.forEach(
-(cookie,index)=>{
+cookieElements.forEach((cookie,index)=>{
 
 let isPressing = false;
 
@@ -313,227 +233,230 @@ let lastAngle = 0;
 
 let progress = 0;
 
-cookie.addEventListener(
-"mousedown",
-startCircle
-);
+  cookie.addEventListener(
+    "mousedown",
+    startCircle
+  );
 
-cookie.addEventListener(
-"touchstart",
-startCircle,
-{ passive:true }
-);
+  cookie.addEventListener(
+    "touchstart",
+    startCircle
+  );
 
-window.addEventListener(
-"mousemove",
-moveCircle
-);
+  window.addEventListener(
+    "mousemove",
+    moveCircle
+  );
 
-window.addEventListener(
-"touchmove",
-moveCircle,
-{ passive:false }
-);
+  window.addEventListener(
+    "touchmove",
+    moveCircle
+  );
 
-window.addEventListener(
-"mouseup",
-endCircle
-);
+  window.addEventListener(
+    "mouseup",
+    endCircle
+  );
 
-window.addEventListener(
-"touchend",
-endCircle
-);
-
-/* START */
+  window.addEventListener(
+    "touchend",
+    endCircle
+  );
+  cookie.addEventListener("mousedown", startCircle);
+  cookie.addEventListener("touchstart", startCircle, {passive: true});
+  window.addEventListener("mousemove", moveCircle);
+  window.addEventListener("touchmove", moveCircle, {passive: false});
+  window.addEventListener("mouseup", endCircle);
+  window.addEventListener("touchend", endCircle);
 
 function startCircle(e){
 
-```
-if(
-  !cookie.classList.contains("show")
-) return;
+    if(!cookie.classList.contains("show"))
+      return;
 
-if(
-  cookie.classList.contains("open")
-) return;
+    if(cookie.classList.contains("open"))
+      return;
+    if(!cookie.classList.contains("show")) return;
+    if(cookie.classList.contains("open")) return;
 
 isPressing = true;
 
 progress = 0;
 
-const pos =
-getCookiePos(e,cookie);
+const pos = getCookiePos(e,cookie);
 
-lastAngle =
-Math.atan2(pos.y,pos.x);
-```
-
+    lastAngle =
+      Math.atan2(pos.y,pos.x);
+    lastAngle = Math.atan2(pos.y,pos.x);
 }
-
-/* MOVE */
 
 function moveCircle(e){
 
-```
 if(!isPressing) return;
 
-const pos =
-getCookiePos(e,cookie);
+    const pos =
+      getCookiePos(e,cookie);
 
-const angle =
-Math.atan2(pos.y,pos.x);
+    const angle =
+      Math.atan2(pos.y,pos.x);
 
-let delta =
-angle - lastAngle;
+    let delta =
+      angle - lastAngle;
 
-if(delta > Math.PI){
-  delta -= Math.PI * 2;
-}
+    if(delta > Math.PI)
+      delta -= Math.PI * 2;
+    const pos = getCookiePos(e,cookie);
+    const angle = Math.atan2(pos.y,pos.x);
+    let delta = angle - lastAngle;
 
-if(delta < -Math.PI){
-  delta += Math.PI * 2;
-}
+    if(delta < -Math.PI)
+      delta += Math.PI * 2;
+    if(delta > Math.PI) delta -= Math.PI * 2;
+    if(delta < -Math.PI) delta += Math.PI * 2;
 
 progress += Math.abs(delta);
 
 lastAngle = angle;
 
-/* LIMITE */
+/* feedback visual */
+    const scale = 1 + Math.min(progress * 0.03, 0.12);
 
-const visualProgress =
-Math.min(progress,6);
+    const scale =
+      1 + Math.min(progress * 0.03,0.12);
 
-/* SCALE CONTROLADO */
-
-const scale =
-1 + (visualProgress * 0.015);
-
-/* glow */
-
-cookie.style.filter =
-`
-  brightness(${1 + visualProgress * 0.04})
-  drop-shadow(0 0 22px rgba(255,255,255,.35))
-`;
-
-/* NO ROMPE POSITION */
-
-cookie.style.opacity = "1";
-
-cookie.animate(
-  [
-    {
-      transform:
+    cookie.style.filter =
       `
-        scale(1)
-      `
-    },
-    {
-      transform:
-      `
-        scale(${scale})
-      `
-    }
-  ],
-  {
-    duration:120,
-    fill:"forwards"
-  }
-);
+    cookie.style.filter = `
+     brightness(${1 + progress * 0.03})
+     drop-shadow(0 0 25px rgba(255,255,255,0.35))
+      `;
+
+    cookie.style.transform +=
+      ` scale(${scale})`;
+    `;
+    
+    // Mantiene la posición original de la clase e incrementa escala temporal
+    cookie.style.transform = window.getComputedStyle(cookie).transform + ` scale(${scale})`;
 
 /* ACTIVAR */
 
-if(progress >= 6){
+if(progress > 6){
 
-  activateCookie(
-    cookie,
-    index
-  );
+activateCookie(cookie,index);
 
-  isPressing = false;
+isPressing = false;
 }
-```
-
 }
-
-/* END */
 
 function endCircle(){
 
-```
 isPressing = false;
-
-if(
-  !cookie.classList.contains("open")
-){
-
-  cookie.style.filter = "";
-}
-```
-
+    if(!cookie.classList.contains("open")) {
+      cookie.style.filter = "";
+    }
 }
 });
 
-/* ================================= */
-/* POS COOKIE */
+@@ -333,24 +241,9 @@
 /* ================================= */
 
 function getCookiePos(e,el){
 
-const rect =
-el.getBoundingClientRect();
+  const rect =
+    el.getBoundingClientRect();
 
-const x =
-(
-e.touches
-? e.touches[0].clientX
-: e.clientX
-)
+  const x =
+    (e.touches
+      ? e.touches[0].clientX
+      : e.clientX)
+    - rect.left
+    - rect.width / 2;
 
-* rect.left
-* rect.width / 2;
+  const y =
+    (e.touches
+      ? e.touches[0].clientY
+      : e.clientY)
+    - rect.top
+    - rect.height / 2;
 
-const y =
-(
-e.touches
-? e.touches[0].clientY
-: e.clientY
-)
-
-* rect.top
-* rect.height / 2;
-
+  const rect = el.getBoundingClientRect();
+  const x = (e.touches ? e.touches[0].clientX : e.clientX) - rect.left - rect.width / 2;
+  const y = (e.touches ? e.touches[0].clientY : e.clientY) - rect.top - rect.height / 2;
 return {x,y};
 }
 
-/* ================================= */
-/* ACTIVAR */
+@@ -360,61 +253,26 @@
 /* ================================= */
 
 function activateCookie(cookie,index){
 
-if(
-cookie.classList.contains("open")
-) return;
-
+  if(cookie.classList.contains("open")) return;
 cookie.classList.add("open");
-
-cookie.style.filter =
-`     brightness(1.15)
-    drop-shadow(0 0 35px rgba(255,255,255,.45))
-  `;
 
 /* TEXTO */
 
-const text =
-document.createElement("div");
+const phrases = [
 
-text.className =
-"cookie-text";
+    "Dulce energía",
+    "Golden hour",
+    "Stay soft",
+    "Purple soul",
+    "Shine more",
+    "Sweet vibes",
+    "BTS forever",
+    "Enjoy moment"
 
-text.innerText =
-phrases[index];
+    "Dulce energía", "Golden hour", "Stay soft", "Purple soul",
+    "Shine more", "Sweet vibes", "BTS forever", "Enjoy moment"
+];
 
+  const text =
+    document.createElement("div");
+
+  text.className =
+    "cookie-text";
+
+  text.innerText =
+    phrases[index];
+
+  const text = document.createElement("div");
+  text.className = "cookie-text";
+  text.innerText = phrases[index];
 cookie.appendChild(text);
+
+/* ANIMACIÓN */
+
+  cookie.animate(
+
+    [
+
+      {
+        transform:
+          "translateY(-50%) scale(1)"
+      },
+
+      {
+        transform:
+          "translateY(-50%) scale(1.08)"
+      },
+
+      {
+        transform:
+          "translateY(-50%) scale(1)"
+      }
+
+    ],
+
+    {
+      duration:500
+    }
+
+  );
+  cookie.animate([
+    { transform: "translateY(-50%) scale(1)" },
+    { transform: "translateY(-50%) scale(1.08)" },
+    { transform: "translateY(-50%) scale(1)" }
+  ], {
+    duration: 500
+  });
 }
