@@ -1,24 +1,48 @@
 const passwordInput = document.getElementById("passwordInput");
+
 const enterBtn = document.getElementById("enterBtn");
+
 const errorText = document.getElementById("errorText");
 
 const loginScreen = document.getElementById("loginScreen");
+
 const mainScene = document.getElementById("mainScene");
 
-/* PASSWORD */
+const rightPack =
+document.getElementById("rightPack");
 
-enterBtn.addEventListener("click", checkPassword);
+const leftPack =
+document.querySelector(".left-pack");
 
-passwordInput.addEventListener("keydown", (e)=>{
+const inside =
+document.querySelector(".inside");
 
-  if(e.key === "Enter"){
-    checkPassword();
+const cookieElements =
+document.querySelectorAll(".cookie");
+
+/* ================================= */
+/* LOGIN */
+/* ================================= */
+
+enterBtn.addEventListener(
+  "click",
+  checkPassword
+);
+
+passwordInput.addEventListener(
+  "keydown",
+  (e)=>{
+
+    if(e.key === "Enter"){
+      checkPassword();
+    }
   }
-});
+);
 
 function checkPassword(){
 
-  const password = passwordInput.value;
+  const password =
+  passwordInput.value;
 
   if(password === "BTSXSIEMPRE"){
 
@@ -34,7 +58,8 @@ function checkPassword(){
 
   }else{
 
-    errorText.innerText = "WRONG PASSWORD";
+    errorText.innerText =
+    "WRONG PASSWORD";
 
     loginScreen.animate(
       [
@@ -51,13 +76,9 @@ function checkPassword(){
   }
 }
 
+/* ================================= */
 /* PAQUETE */
-
-const rightPack = document.getElementById("rightPack");
-
-const inside = document.querySelector(".inside");
-
-const cookies = document.getElementById("cookies");
+/* ================================= */
 
 let isDragging = false;
 
@@ -67,17 +88,41 @@ let currentRotation = 0;
 
 let isOpened = false;
 
-rightPack.addEventListener("mousedown", startDrag);
+let cookieIndex = 0;
 
-window.addEventListener("mousemove", drag);
+/* EVENTOS */
 
-window.addEventListener("mouseup", stopDrag);
+rightPack.addEventListener(
+  "mousedown",
+  startDrag
+);
 
-rightPack.addEventListener("touchstart", startDrag);
+window.addEventListener(
+  "mousemove",
+  drag
+);
 
-window.addEventListener("touchmove", drag);
+window.addEventListener(
+  "mouseup",
+  stopDrag
+);
 
-window.addEventListener("touchend", stopDrag);
+rightPack.addEventListener(
+  "touchstart",
+  startDrag
+);
+
+window.addEventListener(
+  "touchmove",
+  drag
+);
+
+window.addEventListener(
+  "touchend",
+  stopDrag
+);
+
+/* ABRIR */
 
 function startDrag(e){
 
@@ -87,7 +132,8 @@ function startDrag(e){
 
   startX = getX(e);
 
-  rightPack.style.transition = "none";
+  rightPack.style.transition =
+  "none";
 }
 
 function drag(e){
@@ -117,22 +163,13 @@ function stopDrag(){
 
     isOpened = true;
 
-    rightPack.style.cursor = "default";
-
-    /* APERTURA */
+    rightPack.style.cursor =
+    "default";
 
     rightPack.style.transition =
     "transform 0.16s ease-out";
 
     updatePack(60);
-
-    /* SALIDA GALLETITAS */
-
-    setTimeout(()=>{
-
-      cookies.classList.add("show");
-
-    },280);
 
     /* DESPEGUE */
 
@@ -154,7 +191,9 @@ function stopDrag(){
 
     setTimeout(()=>{
 
-      rightPack.classList.add("falling");
+      rightPack.classList.add(
+        "falling"
+      );
 
       rightPack.style.transition =
       "transform 2.2s cubic-bezier(.16,.72,.2,1), opacity 0.4s linear 1.8s";
@@ -168,7 +207,8 @@ function stopDrag(){
 
       setTimeout(()=>{
 
-        rightPack.style.opacity = "0";
+        rightPack.style.opacity =
+        "0";
 
       },1800);
 
@@ -207,4 +247,31 @@ function getX(e){
   }
 
   return e.clientX;
+}
+
+/* ================================= */
+/* GALLETITAS */
+/* ================================= */
+
+leftPack.addEventListener(
+  "click",
+  spawnCookie
+);
+
+function spawnCookie(){
+
+  if(!isOpened) return;
+
+  if(cookieIndex >= 8) return;
+
+  const cookie =
+  cookieElements[cookieIndex];
+
+  cookie.classList.add("show");
+
+  cookie.classList.add(
+    `pos${cookieIndex + 1}`
+  );
+
+  cookieIndex++;
 }
