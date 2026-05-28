@@ -10,7 +10,10 @@ const inside = document.querySelector(".inside");
 
 const cookieElements = document.querySelectorAll(".cookie");
 
+/* ========================= */
 /* LOGIN */
+/* ========================= */
+
 enterBtn.addEventListener("click", checkPassword);
 passwordInput.addEventListener("keydown", e => {
   if (e.key === "Enter") checkPassword();
@@ -32,10 +35,13 @@ function checkPassword(){
   }
 }
 
-/* PAQUETE */
+/* ========================= */
+/* PAQUETE (FIX ESTABLE) */
+/* ========================= */
+
 let isDragging = false;
 let startX = 0;
-let currentRotation = 0;
+let move = 0;
 let isOpened = false;
 let cookieIndex = 0;
 
@@ -49,18 +55,21 @@ window.addEventListener("touchend", stopDrag);
 
 function startDrag(e){
   if (isOpened) return;
+
   isDragging = true;
   startX = getX(e);
+
+  // 🔥 importante: evitar saltos de animación
+  rightPack.style.transition = "none";
 }
 
 function drag(e){
   if (!isDragging) return;
 
-  let move = getX(e) - startX;
-  if (move < 0) move = 0;
-  if (move > 60) move = 60;
+  move = getX(e) - startX;
 
-  currentRotation = move;
+  if (move < 0) move = 0;
+  if (move > 80) move = 80;
 
   const rotate = move * -0.15;
 
@@ -68,22 +77,58 @@ function drag(e){
     `rotateZ(${rotate}deg) translateX(${move * 0.08}px)`;
 
   inside.style.width = `${move * 1.1}px`;
+  inside.style.opacity = 0.2 + (move / 120);
 }
 
 function stopDrag(){
   if (!isDragging) return;
+
   isDragging = false;
 
-  if (currentRotation > 28){
-    isOpened = true;
+  if (move > 30){
+    openPack();
+  } else {
+    resetPack();
   }
+}
+
+function openPack(){
+  isOpened = true;
+
+  rightPack.style.transition = "transform 0.2s ease";
+
+  rightPack.style.transform =
+    `rotateZ(8deg) translateX(10px) translateY(6px)`;
+
+  setTimeout(() => {
+    rightPack.style.transition = "transform 2s ease, opacity 0.5s ease 1.5s";
+
+    rightPack.style.transform =
+      `rotateZ(25deg) translateX(20px) translateY(900px)`;
+
+    setTimeout(() => {
+      rightPack.style.opacity = "0";
+    }, 1500);
+
+  }, 200);
+}
+
+function resetPack(){
+  rightPack.style.transition = "transform 0.3s ease";
+
+  rightPack.style.transform = "rotateZ(0deg) translateX(0px)";
+  inside.style.width = "0px";
+  inside.style.opacity = "0.25";
 }
 
 function getX(e){
   return e.touches ? e.touches[0].clientX : e.clientX;
 }
 
+/* ========================= */
 /* GALLETITAS */
+/* ========================= */
+
 leftPack.addEventListener("click", spawnCookie);
 
 function spawnCookie(){
@@ -96,7 +141,10 @@ function spawnCookie(){
   cookieIndex++;
 }
 
-/* FASE 4 FIX (ESTABLE) */
+/* ========================= */
+/* FASE 4 (SIN ROMPER TRANSFORM BASE) */
+/* ========================= */
+
 cookieElements.forEach((cookie, index) => {
 
   let isPressing = false;
@@ -120,8 +168,6 @@ cookieElements.forEach((cookie, index) => {
 
     const pos = getPos(e, cookie);
     lastAngle = Math.atan2(pos.y, pos.x);
-
-    e.preventDefault();
   }
 
   function moveCircle(e){
@@ -137,11 +183,12 @@ cookieElements.forEach((cookie, index) => {
     progress += Math.abs(delta);
     lastAngle = angle;
 
-    const scale = 1 + Math.min(progress * 0.25, 0.3);
+    const scale = 1 + Math.min(progress * 0.2, 0.3);
 
-    cookie.style.transform = `translate(-50%,-50%) scale(${scale})`;
+    cookie.style.transform =
+      `translate(-50%,-50%) scale(${scale})`;
 
-    if (progress > 3.5){
+    if (progress > 4){
       activateCookie(index);
       isPressing = false;
     }
