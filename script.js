@@ -17,9 +17,7 @@ let cookieIndex = 0;
 /* =========================
    LOGIN
 ========================= */
-
 enterBtn.addEventListener("click", checkPassword);
-
 passwordInput.addEventListener("keydown", (e) => {
   if (e.key === "Enter") checkPassword();
 });
@@ -27,7 +25,6 @@ passwordInput.addEventListener("keydown", (e) => {
 function checkPassword() {
   if (passwordInput.value.trim().toUpperCase() === "BTSXSIEMPRE") {
     loginScreen.classList.add("hide-login");
-
     setTimeout(() => {
       loginScreen.style.display = "none";
       mainScene.classList.remove("hidden");
@@ -40,22 +37,19 @@ function checkPassword() {
 /* =========================
    FASE 3 - ABRIR PACK (DRAG)
 ========================= */
-
 let dragActive = false;
 let dragStartX = 0;
 let move = 0;
 
 rightPack.addEventListener("pointerdown", startDrag);
-window.addEventListener("pointermove", drag);
+window.addEventListener("pointermove", drag, { passive: false });
 window.addEventListener("pointerup", stopDrag);
 window.addEventListener("pointercancel", stopDrag);
 
 function startDrag(e) {
   if (isOpened) return;
-
   dragActive = true;
   dragStartX = e.clientX;
-
   rightPack.style.transition = "none";
   rightPack.setPointerCapture?.(e.pointerId);
 }
@@ -68,8 +62,6 @@ function drag(e) {
   if (move > 60) move = 60;
 
   updatePack(move);
-
-  // Evita scroll en touch
   if (e.cancelable) e.preventDefault();
 }
 
@@ -126,9 +118,7 @@ function updatePack(m) {
 
 /* =========================
    FASE 3 - SPAWN COOKIES
-   click en pack izquierdo
 ========================= */
-
 leftPack.addEventListener("click", spawnCookie);
 
 function spawnCookie() {
@@ -137,22 +127,21 @@ function spawnCookie() {
 
   const cookie = cookieElements[cookieIndex];
 
+  // por las dudas: limpiar pos viejas
+  for (let i = 1; i <= 8; i++) cookie.classList.remove(`pos${i}`);
+
   cookie.classList.add("show");
   cookie.classList.add(`pos${cookieIndex + 1}`);
 
-  // guardamos transform base ya con posX aplicado
-  requestAnimationFrame(() => {
-    cookie.dataset.baseTransform = getComputedStyle(cookie).transform;
-  });
+  // reset escala variable
+  cookie.style.setProperty("--s", "1");
 
   cookieIndex++;
 }
 
 /* =========================
-   FASE 4 - PREPARAR ESTRUCTURA
-   (mitades + crema)
+   FASE 4 - DOM (MITADES + CREMA)
 ========================= */
-
 const phrases = [
   "Dulce energía",
   "Golden hour",
@@ -170,15 +159,10 @@ cookieElements.forEach((cookie, index) => {
 });
 
 function prepareCookieDOM(cookie, index) {
-  // Si ya tiene halves/cream, no duplicar
   const hasHalves =
     cookie.querySelector(".cookie-half") && cookie.querySelector(".cream");
   if (hasHalves) return;
 
-  // Intentar sacar imagen desde:
-  // 1) data-img
-  // 2) un <img> hijo
-  // 3) background-image del .cookie
   let imgSrc =
     cookie.dataset.img ||
     cookie.getAttribute("data-img") ||
@@ -189,13 +173,11 @@ function prepareCookieDOM(cookie, index) {
 
   if (!imgSrc) {
     const bg = getComputedStyle(cookie).backgroundImage;
-    // bg puede venir como url("..."), intentamos usarlo tal cual
-    if (bg && bg !== "none") imgSrc = bg;
+    if (bg && bg !== "none") imgSrc = bg; // ya viene como url(...)
   } else {
     imgSrc = `url("${imgSrc}")`;
   }
 
-  // si había <img>, lo sacamos para que no moleste
   const childImg = cookie.querySelector("img");
   if (childImg) childImg.remove();
 
@@ -218,14 +200,12 @@ function prepareCookieDOM(cookie, index) {
 
 /* =========================
    FASE 4 - GESTO CIRCULAR
-   para abrir galletita
+   (SIN tocar transform)
 ========================= */
-
 function bindCookieOpenGesture(cookie, index) {
   let pressing = false;
   let lastAngle = 0;
   let progress = 0;
-  let baseTransform = "none";
 
   cookie.addEventListener("pointerdown", startCircle);
   window.addEventListener("pointermove", moveCircle, { passive: false });
@@ -240,10 +220,7 @@ function bindCookieOpenGesture(cookie, index) {
     progress = 0;
 
     cookie.classList.add("interacting");
-
-    // guardamos el transform base (con posX)
-    baseTransform = cookie.dataset.baseTransform || getComputedStyle(cookie).transform;
-    if (!cookie.dataset.baseTransform) cookie.dataset.baseTransform = baseTransform;
+    cookie.style.setProperty("--s", "1");
 
     const pos = getCookiePos(e, cookie);
     lastAngle = Math.atan2(pos.y, pos.x);
@@ -258,19 +235,14 @@ function bindCookieOpenGesture(cookie, index) {
     const angle = Math.atan2(pos.y, pos.x);
 
     let delta = angle - lastAngle;
-
     if (delta > Math.PI) delta -= Math.PI * 2;
     if (delta < -Math.PI) delta += Math.PI * 2;
 
     progress += Math.abs(delta);
     lastAngle = angle;
 
-    // escala suave mientras gira
     const scale = 1 + Math.min(progress * 0.03, 0.12);
-
-    // mantenemos el transform base + escala (sin romper tus posX)
-    const bt = baseTransform && baseTransform !== "none" ? baseTransform : "";
-    cookie.style.transform = `${bt} scale(${scale})`;
+    cookie.style.setProperty("--s", String(scale));
 
     if (progress > 6) {
       activateCookie(cookie, index);
@@ -282,12 +254,8 @@ function bindCookieOpenGesture(cookie, index) {
 
   function endCircle() {
     if (!pressing) {
-      // igual “normalizamos” por si quedó con escala
       if (!cookie.classList.contains("open")) {
-        const bt = cookie.dataset.baseTransform && cookie.dataset.baseTransform !== "none"
-          ? cookie.dataset.baseTransform
-          : "";
-        cookie.style.transform = bt;
+        cookie.style.setProperty("--s", "1");
         cookie.classList.remove("interacting");
       }
       return;
@@ -296,10 +264,7 @@ function bindCookieOpenGesture(cookie, index) {
     pressing = false;
 
     if (!cookie.classList.contains("open")) {
-      const bt = cookie.dataset.baseTransform && cookie.dataset.baseTransform !== "none"
-        ? cookie.dataset.baseTransform
-        : "";
-      cookie.style.transform = bt;
+      cookie.style.setProperty("--s", "1");
       cookie.classList.remove("interacting");
     }
   }
@@ -307,37 +272,24 @@ function bindCookieOpenGesture(cookie, index) {
 
 function getCookiePos(e, el) {
   const rect = el.getBoundingClientRect();
-
   const x = e.clientX - rect.left - rect.width / 2;
   const y = e.clientY - rect.top - rect.height / 2;
-
   return { x, y };
 }
-
-/* =========================
-   ACTIVAR (ABRIR) COOKIE
-========================= */
 
 function activateCookie(cookie, index) {
   if (cookie.classList.contains("open")) return;
 
   cookie.classList.add("open");
   cookie.classList.remove("interacting");
+  cookie.style.setProperty("--s", "1");
 
-  // asegurar texto en crema (por si cambiaste phrases)
   const cream = cookie.querySelector(".cream");
   if (cream) cream.textContent = phrases[index] || "";
 
-  // vuelve a transform base (sin escala)
-  const bt =
-    cookie.dataset.baseTransform && cookie.dataset.baseTransform !== "none"
-      ? cookie.dataset.baseTransform
-      : "";
-  cookie.style.transform = bt;
-
-  // mini “pop” (sin romper translate)
+  // pequeño “pop” con variable
   cookie.animate(
-    [{ transform: `${bt}` }, { transform: `${bt} scale(1.06)` }, { transform: `${bt}` }],
-    { duration: 450, easing: "ease-out" }
+    [{ transform: "scale(1)" }, { transform: "scale(1.06)" }, { transform: "scale(1)" }],
+    { duration: 420, easing: "ease-out" }
   );
 }
