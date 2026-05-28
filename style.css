@@ -42,42 +42,6 @@ body{
   text-align:center;
 }
 
-.login-box h1{
-  color:white;
-  font-size:38px;
-  margin-bottom:10px;
-  letter-spacing:4px;
-}
-
-.login-box p{
-  color:rgba(255,255,255,0.7);
-  margin-bottom:25px;
-  letter-spacing:2px;
-}
-
-.login-box input{
-  width:100%;
-  padding:16px;
-  border:none;
-  outline:none;
-  border-radius:16px;
-  background:rgba(255,255,255,0.08);
-  color:white;
-  text-align:center;
-  margin-bottom:20px;
-  border:1px solid rgba(180,120,255,0.25);
-}
-
-.login-box button{
-  width:100%;
-  padding:15px;
-  border:none;
-  border-radius:16px;
-  background:linear-gradient(45deg, rgba(120,70,255,0.9), rgba(180,120,255,0.9));
-  color:white;
-  cursor:pointer;
-}
-
 /* ESCENA */
 .scene{
   perspective:1800px;
@@ -103,9 +67,10 @@ body{
   height:100%;
   background-image:url("oreo-pack.png");
   background-size:700px 420px;
+  background-repeat:no-repeat;
 }
 
-/* IZQ */
+/* IZQUIERDA */
 .left-pack{
   left:0;
   width:646px;
@@ -113,15 +78,16 @@ body{
   z-index:2;
 }
 
-/* DER */
+/* DERECHA */
 .right-pack{
   right:0;
   width:54px;
   background-position:right center;
   z-index:4;
+  transform-origin:left center;
 }
 
-/* INSIDE */
+/* INTERIOR */
 .inside{
   position:absolute;
   top:28px;
@@ -131,10 +97,10 @@ body{
   background:linear-gradient(to right, rgba(28,15,55,0.96), rgba(65,35,120,0.96));
   z-index:1;
   opacity:0.25;
-  transition:width 0.08s linear, opacity 0.08s linear;
+  transition:width 0.1s linear, opacity 0.1s linear;
 }
 
-/* COOKIES */
+/* COOKIES CONTAINER */
 .cookies{
   position:absolute;
   top:50%;
@@ -143,9 +109,10 @@ body{
   height:300px;
   transform:translateY(-50%);
   z-index:6;
+  pointer-events:none;
 }
 
-/* COOKIE BASE */
+/* COOKIE BASE (IMPORTANTE FIX) */
 .cookie{
   position:absolute;
   width:155px;
@@ -153,43 +120,48 @@ body{
   top:50%;
   opacity:0;
 
-  transform:translateY(-50%) scale(0.7);
+  /* 🔥 SOLO TRANSFORM PARA POSICIÓN */
+  transform:translateY(-50%);
 
-  transition:transform 0.6s ease, opacity 0.5s ease;
+  transition:transform 0.6s ease, opacity 0.4s ease;
   cursor:pointer;
   user-select:none;
   touch-action:none;
+
+  transform-origin:center;
 }
 
+/* SHOW */
 .cookie.show{
   opacity:1;
 }
 
-/* POSICIONES (INTACTAS) */
-.cookie.pos1{ transform: translate(-762px,-50%) rotate(-8deg) scale(1); }
-.cookie.pos2{ transform: translate(-622px,-50%) rotate(5deg) scale(1); }
-.cookie.pos3{ transform: translate(-482px,-50%) rotate(-5deg) scale(1); }
-.cookie.pos4{ transform: translate(-342px,-50%) rotate(5deg) scale(1); }
-.cookie.pos5{ transform: translate(-202px,-50%) rotate(-5deg) scale(1); }
-.cookie.pos6{ transform: translate(-62px,-50%) rotate(5deg) scale(1); }
-.cookie.pos7{ transform: translate(78px,-50%) rotate(-5deg) scale(1); }
-.cookie.pos8{ transform: translate(218px,-50%) rotate(5deg) scale(1); }
+/* POSICIONES (NO TOCAR) */
+.cookie.pos1{ transform: translate(-762px,-50%) rotate(-8deg); }
+.cookie.pos2{ transform: translate(-622px,-50%) rotate(5deg); }
+.cookie.pos3{ transform: translate(-482px,-50%) rotate(-5deg); }
+.cookie.pos4{ transform: translate(-342px,-50%) rotate(5deg); }
+.cookie.pos5{ transform: translate(-202px,-50%) rotate(-5deg); }
+.cookie.pos6{ transform: translate(-62px,-50%) rotate(5deg); }
+.cookie.pos7{ transform: translate(78px,-50%) rotate(-5deg); }
+.cookie.pos8{ transform: translate(218px,-50%) rotate(5deg); }
 
 /* FASE 4 */
 .cookie.open{
   z-index:10;
 }
 
+/* crema */
 .cookie.open::after{
   content:"";
   position:absolute;
   inset:25%;
-  background:radial-gradient(circle, #f6d36b, #d8a94a);
   border-radius:50%;
-  opacity:0.9;
+  background:radial-gradient(circle, #f6d36b, #d8a94a);
   animation:creamPop 0.4s ease forwards;
 }
 
+/* texto */
 .cookie-text{
   position:absolute;
   top:50%;
@@ -197,13 +169,8 @@ body{
   transform:translate(-50%,-50%);
   color:white;
   font-size:13px;
-  text-align:center;
   opacity:0;
   animation:textIn 0.4s ease forwards;
-}
-
-.cookie.open .cookie-text{
-  opacity:1;
 }
 
 @keyframes creamPop{
