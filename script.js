@@ -92,7 +92,7 @@ function drag(e){
   let move = currentX - startX;
 
   if(move < 0) move = 0;
-  if(move > 150) move = 150;
+  if(move > 60) move = 60;
 
   currentRotation = move;
 
@@ -105,52 +105,34 @@ function stopDrag(){
 
   isDragging = false;
 
-  if(currentRotation > 75){
+  if(currentRotation > 28){
 
     isOpened = true;
 
     rightPack.style.cursor = "default";
 
-    /* APERTURA */
+    /* APERTURA PEQUEÑA */
 
     rightPack.style.transition =
-    "transform 0.18s ease-out";
+    "transform 0.16s ease-out";
 
-    updatePack(150);
+    updatePack(60);
 
     /* DESPEGUE */
 
     setTimeout(()=>{
 
       rightPack.style.transition =
-      "transform 0.16s ease-out";
+      "transform 0.14s ease-out";
 
       rightPack.style.transform =
       `
-        rotateY(-18deg)
-        rotateZ(4deg)
-        translateX(10px)
-        translateY(4px)
+        rotateZ(8deg)
+        translateX(8px)
+        translateY(6px)
       `;
 
-    },110);
-
-    /* FLEXIÓN */
-
-    setTimeout(()=>{
-
-      rightPack.style.transition =
-      "transform 0.22s ease-in";
-
-      rightPack.style.transform =
-      `
-        rotateY(-6deg)
-        rotateZ(16deg)
-        translateX(26px)
-        translateY(70px)
-      `;
-
-    },260);
+    },100);
 
     /* CAÍDA */
 
@@ -158,23 +140,23 @@ function stopDrag(){
 
       rightPack.classList.add("falling");
 
-rightPack.style.transform =
-`
-  rotateY(0deg)
-  rotateZ(18deg)
-  translateX(35px)
-  translateY(980px)
-`;
+      rightPack.style.transition =
+      "transform 2.2s cubic-bezier(.16,.72,.2,1), opacity 0.4s linear 1.8s";
 
-      /* DESAPARECE DESPUÉS DE CAER */
+      rightPack.style.transform =
+      `
+        rotateZ(22deg)
+        translateX(18px)
+        translateY(850px)
+      `;
 
       setTimeout(()=>{
 
         rightPack.style.opacity = "0";
 
-      },1100);
+      },1800);
 
-    },420);
+    },260);
 
   }else{
 
@@ -187,19 +169,19 @@ rightPack.style.transform =
 
 function updatePack(move){
 
-  let rotate = move * -0.42;
+  let rotate = move * -0.15;
 
   rightPack.style.transform =
   `
-    rotateY(${rotate}deg)
-    translateX(${move * 0.18}px)
+    rotateZ(${rotate}deg)
+    translateX(${move * 0.08}px)
   `;
 
   inside.style.width =
-  `${move * 0.82}px`;
+  `${move * 1.1}px`;
 
   inside.style.opacity =
-  0.35 + (move / 170);
+  0.2 + (move / 120);
 }
 
 function getX(e){
