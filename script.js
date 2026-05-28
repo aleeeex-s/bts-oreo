@@ -152,27 +152,29 @@ function stopDrag(){
 
     },260);
 
-    /* CAÍDA REAL */
+    /* CAÍDA */
 
     setTimeout(()=>{
 
-rightPack.classList.add("falling");
+      rightPack.classList.add("falling");
 
-rightPack.style.transform =
-`
-  rotateY(0deg)
-  rotateZ(72deg)
-  translateX(120px)
-  translateY(980px)
-`;
+      rightPack.style.transform =
+      `
+        rotateY(0deg)
+        rotateZ(72deg)
+        translateX(120px)
+        translateY(980px)
+      `;
 
-/* DESAPARECE CUANDO YA CAYÓ */
+      /* DESAPARECE DESPUÉS DE CAER */
 
-setTimeout(()=>{
+      setTimeout(()=>{
 
-  rightPack.style.opacity = "0";
+        rightPack.style.opacity = "0";
 
-},1100);
+      },1100);
+
+    },420);
 
   }else{
 
