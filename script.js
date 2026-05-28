@@ -19,7 +19,7 @@ passwordInput.addEventListener("keydown", e => {
 function checkPassword(){
   const password = passwordInput.value;
 
-  if(password === "BTSXSIEMPRE"){
+  if (password === "BTSXSIEMPRE"){
     loginScreen.style.opacity = "0";
 
     setTimeout(() => {
@@ -35,7 +35,7 @@ function checkPassword(){
 /* PAQUETE */
 let isDragging = false;
 let startX = 0;
-let progress = 0;
+let currentRotation = 0;
 let isOpened = false;
 let cookieIndex = 0;
 
@@ -48,74 +48,35 @@ window.addEventListener("touchmove", drag);
 window.addEventListener("touchend", stopDrag);
 
 function startDrag(e){
-  if(isOpened) return;
-
+  if (isOpened) return;
   isDragging = true;
   startX = getX(e);
-
-  rightPack.style.transition = "none";
 }
 
 function drag(e){
-  if(!isDragging || isOpened) return;
+  if (!isDragging) return;
 
   let move = getX(e) - startX;
-  if(move < 0) move = 0;
-  if(move > 80) move = 80;
+  if (move < 0) move = 0;
+  if (move > 60) move = 60;
 
-  progress = move;
+  currentRotation = move;
 
-  const rotate = move * -0.18;
+  const rotate = move * -0.15;
 
   rightPack.style.transform =
     `rotateZ(${rotate}deg) translateX(${move * 0.08}px)`;
 
   inside.style.width = `${move * 1.1}px`;
-  inside.style.opacity = 0.2 + (move / 140);
 }
 
 function stopDrag(){
-  if(!isDragging) return;
-
+  if (!isDragging) return;
   isDragging = false;
 
-  if(progress > 28){
-    openPack();
-  } else {
-    resetPack();
+  if (currentRotation > 28){
+    isOpened = true;
   }
-}
-
-function openPack(){
-  isOpened = true;
-
-  rightPack.style.transition = "transform 0.2s ease-out";
-
-  rightPack.style.transform =
-    `rotateZ(8deg) translateX(10px) translateY(6px)`;
-
-  setTimeout(() => {
-    rightPack.style.transition =
-      "transform 1.8s cubic-bezier(.16,.72,.2,1), opacity 0.6s ease 1.2s";
-
-    rightPack.style.transform =
-      `rotateZ(22deg) translateX(18px) translateY(850px)`;
-
-    setTimeout(() => {
-      rightPack.style.opacity = "0";
-    }, 1200);
-
-  }, 220);
-}
-
-function resetPack(){
-  progress = 0;
-
-  rightPack.style.transition = "transform 0.3s ease";
-  rightPack.style.transform = "rotateZ(0deg) translateX(0px)";
-
-  inside.style.width = "0px";
-  inside.style.opacity = "0.25";
 }
 
 function getX(e){
@@ -126,8 +87,8 @@ function getX(e){
 leftPack.addEventListener("click", spawnCookie);
 
 function spawnCookie(){
-  if(!isOpened) return;
-  if(cookieIndex >= 8) return;
+  if (!isOpened) return;
+  if (cookieIndex >= 8) return;
 
   const cookie = cookieElements[cookieIndex];
 
@@ -135,7 +96,7 @@ function spawnCookie(){
   cookieIndex++;
 }
 
-/* FASE 4 */
+/* FASE 4 FIX (ESTABLE) */
 cookieElements.forEach((cookie, index) => {
 
   let isPressing = false;
@@ -152,34 +113,35 @@ cookieElements.forEach((cookie, index) => {
   window.addEventListener("touchend", endCircle);
 
   function startCircle(e){
-    if(!cookie.classList.contains("show")) return;
+    if (!cookie.classList.contains("show")) return;
 
     isPressing = true;
     progress = 0;
 
     const pos = getPos(e, cookie);
     lastAngle = Math.atan2(pos.y, pos.x);
+
+    e.preventDefault();
   }
 
   function moveCircle(e){
-    if(!isPressing) return;
+    if (!isPressing) return;
 
     const pos = getPos(e, cookie);
     const angle = Math.atan2(pos.y, pos.x);
 
     let delta = angle - lastAngle;
-    if(delta > Math.PI) delta -= Math.PI * 2;
-    if(delta < -Math.PI) delta += Math.PI * 2;
+    if (delta > Math.PI) delta -= Math.PI * 2;
+    if (delta < -Math.PI) delta += Math.PI * 2;
 
     progress += Math.abs(delta);
     lastAngle = angle;
 
     const scale = 1 + Math.min(progress * 0.25, 0.3);
 
-    cookie.style.transform =
-      `translate(-50%, -50%) scale(${scale})`;
+    cookie.style.transform = `translate(-50%,-50%) scale(${scale})`;
 
-    if(progress > 3.2){
+    if (progress > 3.5){
       activateCookie(index);
       isPressing = false;
     }
@@ -202,6 +164,7 @@ cookieElements.forEach((cookie, index) => {
   }
 });
 
+/* ACTIVACIÓN FINAL */
 function activateCookie(index){
   const cookie = cookieElements[index];
 
