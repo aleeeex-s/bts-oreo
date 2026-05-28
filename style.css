@@ -200,3 +200,9 @@ body{
   50%{ transform:translateY(-8px); }
   100%{ transform:translateY(0px); }
 }
+
+.cookie{
+  cursor:pointer;
+  user-select:none;
+  touch-action:none;
+}
