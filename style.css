@@ -178,20 +178,6 @@ body::before{
   0 0 25px rgba(140,70,255,0.45);
 }
 
-/* CREDIT */
-
-.credit{
-  margin-top:18px;
-
-  color:rgba(255,255,255,0.45);
-
-  font-size:13px;
-
-  letter-spacing:2px;
-
-  text-transform:uppercase;
-}
-
 #errorText{
   display:block;
 
