@@ -156,17 +156,23 @@ function stopDrag(){
 
     setTimeout(()=>{
 
-      rightPack.classList.add("falling");
+rightPack.classList.add("falling");
 
-      rightPack.style.transform =
-      `
-        rotateY(0deg)
-        rotateZ(72deg)
-        translateX(120px)
-        translateY(980px)
-      `;
+rightPack.style.transform =
+`
+  rotateY(0deg)
+  rotateZ(72deg)
+  translateX(120px)
+  translateY(980px)
+`;
 
-    },420);
+/* DESAPARECE CUANDO YA CAYÓ */
+
+setTimeout(()=>{
+
+  rightPack.style.opacity = "0";
+
+},1100);
 
   }else{
 
