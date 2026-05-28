@@ -28,7 +28,7 @@ body{
   position:relative;
 }
 
-/* GLOW GENERAL */
+/* GLOW */
 body::before{
   content:"";
   position:absolute;
@@ -66,7 +66,6 @@ body::after{
   align-items:center;
   z-index:10;
   backdrop-filter:blur(10px);
-  transition:1s;
 }
 
 .login-box{
@@ -101,7 +100,6 @@ body::after{
   border-radius:16px;
   background:rgba(255,255,255,0.08);
   color:white;
-  font-size:16px;
   text-align:center;
   margin-bottom:20px;
   border:1px solid rgba(180,120,255,0.25);
@@ -114,23 +112,7 @@ body::after{
   border-radius:16px;
   background:linear-gradient(45deg, rgba(120,70,255,0.9), rgba(180,120,255,0.9));
   color:white;
-  font-size:15px;
-  letter-spacing:2px;
   cursor:pointer;
-  transition:0.3s;
-}
-
-.login-box button:hover{
-  transform:scale(1.03);
-  box-shadow:0 0 25px rgba(140,70,255,0.45);
-}
-
-#errorText{
-  display:block;
-  margin-top:18px;
-  color:#ff6b9d;
-  font-size:14px;
-  height:20px;
 }
 
 /* ESCENA */
@@ -144,12 +126,16 @@ body::after{
   pointer-events:none;
 }
 
-/* CONTENEDOR */
+/* CONTENEDOR CENTRADO REAL */
 .pack-container{
   position:relative;
   width:700px;
   height:420px;
   overflow:visible;
+
+  left:50%;
+  transform:translateX(-50%);
+
   animation:float 5s ease-in-out infinite;
 }
 
@@ -167,14 +153,15 @@ body::after{
     drop-shadow(0 0 60px rgba(120,40,255,0.18));
 }
 
+/* IZQUIERDA */
 .left-pack{
   left:0;
   width:646px;
   background-position:left center;
   z-index:2;
-  cursor:pointer;
 }
 
+/* DERECHA (ABERTURA REAL) */
 .right-pack{
   right:0;
   width:54px;
@@ -182,39 +169,26 @@ body::after{
   z-index:4;
 }
 
-/* INTERIOR VISUAL */
-.inside{
-  position:absolute;
-  top:28px;
-  bottom:28px;
-  right:46px;
-  width:0px;
-  background:linear-gradient(to right, rgba(28,15,55,0.96), rgba(65,35,120,0.96));
-  opacity:0.25;
-  z-index:1;
-}
-
-/* GALLETITAS */
+/* GALLETITAS CONTENEDOR */
 .cookies{
   position:absolute;
 
   top:50%;
+  right:0; /* 🔥 pegado a la abertura real */
 
-  /* 🔥 AJUSTE FINAL DE CENTRADO */
-  right:70px;
+  transform:translate(0,-50%);
 
-  transform:translateY(-50%);
-
-  width:1500px;
+  width:300px; /* 🔥 importante: evita efecto “fantasma” */
   height:300px;
 
   overflow:visible;
 
   z-index:6;
+
   pointer-events:none;
 }
 
-/* COOKIE INDIVIDUAL */
+/* GALLETAS */
 .cookie{
   position:absolute;
 
@@ -226,11 +200,15 @@ body::after{
 
   opacity:0;
 
-  transform:translate(0,-50%) scale(0.6);
+  /* 🔥 SALIDA REAL DESDE LA ABERTURA (no fade central) */
+  transform:
+    translateX(40px)
+    translateY(-50%)
+    scale(0.6);
 
   transition:
-    transform 1.6s cubic-bezier(0.16, 1, 0.3, 1),
-    opacity 0.8s ease;
+    transform 1.8s cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 0.6s ease;
 
   transition-delay: var(--d, 0s);
 
@@ -239,6 +217,8 @@ body::after{
     drop-shadow(0 0 14px rgba(140,70,255,0.2));
 
   pointer-events:none;
+
+  transform-origin:right center;
 }
 
 .cookie.show{
