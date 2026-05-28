@@ -18,7 +18,6 @@ body{
 
   background-size:cover;
   background-position:center;
-
   position:relative;
 }
 
@@ -98,6 +97,7 @@ body{
   height:420px;
   overflow:visible;
   margin:0 auto;
+  animation:float 5s ease-in-out infinite;
 }
 
 /* PACK */
@@ -153,17 +153,29 @@ body{
   pointer-events:none;
 }
 
-/* BASE */
+/* COOKIE BASE (IMPORTANTE: NEUTRA) */
 .cookie{
   position:absolute;
+
   width:155px;
+
   right:0;
   top:50%;
+
   opacity:0;
 
+  /* 🔥 FIX CLAVE: no interferir con posX */
   transform:translateY(-50%) scale(0.7);
 
-  transition:transform 0.9s cubic-bezier(.22,1,.36,1), opacity 0.5s ease;
+  transition:
+    transform 0.9s cubic-bezier(.22,1,.36,1),
+    opacity 0.5s ease;
+
+  filter:
+    drop-shadow(0 14px 20px rgba(0,0,0,0.45))
+    drop-shadow(0 0 14px rgba(140,70,255,0.2));
+
+  pointer-events:none;
 }
 
 /* SHOW */
@@ -171,13 +183,20 @@ body{
   opacity:1;
 }
 
-/* POSICIONES (TU SISTEMA ORIGINAL RESTAURADO) */
+/* POSICIONES (TU SISTEMA ORIGINAL INTACTO) */
 
-.cookie.pos1{ transform: translate(-820px,-50%) rotate(-8deg) scale(1); }
-.cookie.pos2{ transform: translate(-680px,-50%) rotate(5deg) scale(1); }
-.cookie.pos3{ transform: translate(-540px,-50%) rotate(-5deg) scale(1); }
-.cookie.pos4{ transform: translate(-400px,-50%) rotate(5deg) scale(1); }
-.cookie.pos5{ transform: translate(-260px,-50%) rotate(-5deg) scale(1); }
-.cookie.pos6{ transform: translate(-120px,-50%) rotate(5deg) scale(1); }
-.cookie.pos7{ transform: translate(20px,-50%) rotate(-5deg) scale(1); }
-.cookie.pos8{ transform: translate(160px,-50%) rotate(5deg) scale(1); }
+.cookie.pos1{ transform: translate(-762px,-50%) rotate(-8deg) scale(1); }
+.cookie.pos2{ transform: translate(-622px,-50%) rotate(5deg) scale(1); }
+.cookie.pos3{ transform: translate(-482px,-50%) rotate(-5deg) scale(1); }
+.cookie.pos4{ transform: translate(-342px,-50%) rotate(5deg) scale(1); }
+.cookie.pos5{ transform: translate(-202px,-50%) rotate(-5deg) scale(1); }
+.cookie.pos6{ transform: translate(-62px,-50%) rotate(5deg) scale(1); }
+.cookie.pos7{ transform: translate(78px,-50%) rotate(-5deg) scale(1); }
+.cookie.pos8{ transform: translate(218px,-50%) rotate(5deg) scale(1); }
+
+/* ANIMACIONES */
+@keyframes float{
+  0%{ transform:translateY(0px); }
+  50%{ transform:translateY(-8px); }
+  100%{ transform:translateY(0px); }
+}
