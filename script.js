@@ -10,7 +10,10 @@ const inside = document.querySelector(".inside");
 
 const cookieElements = document.querySelectorAll(".cookie");
 
+/* ========================= */
 /* LOGIN */
+/* ========================= */
+
 enterBtn.addEventListener("click", checkPassword);
 passwordInput.addEventListener("keydown", e => {
   if (e.key === "Enter") checkPassword();
@@ -32,7 +35,10 @@ function checkPassword() {
   }
 }
 
-/* PAQUETE */
+/* ========================= */
+/* PAQUETE (FIX ESTABLE) */
+/* ========================= */
+
 let isDragging = false;
 let startX = 0;
 let currentRotation = 0;
@@ -43,50 +49,95 @@ rightPack.addEventListener("mousedown", startDrag);
 window.addEventListener("mousemove", drag);
 window.addEventListener("mouseup", stopDrag);
 
-rightPack.addEventListener("touchstart", startDrag);
-window.addEventListener("touchmove", drag);
+rightPack.addEventListener("touchstart", startDrag, { passive: true });
+window.addEventListener("touchmove", drag, { passive: true });
 window.addEventListener("touchend", stopDrag);
 
-function startDrag(e){
+function startDrag(e) {
   if (isOpened) return;
+
   isDragging = true;
   startX = getX(e);
+
+  rightPack.style.transition = "none";
 }
 
-function drag(e){
-  if (!isDragging) return;
+function drag(e) {
+  if (!isDragging || isOpened) return;
 
   let move = getX(e) - startX;
+
   if (move < 0) move = 0;
-  if (move > 60) move = 60;
+  if (move > 70) move = 70;
 
   currentRotation = move;
 
-  const rotate = move * -0.15;
+  const rotate = move * -0.18;
 
   rightPack.style.transform =
     `rotateZ(${rotate}deg) translateX(${move * 0.08}px)`;
 
   inside.style.width = `${move * 1.1}px`;
+  inside.style.opacity = 0.2 + (move / 140);
 }
 
-function stopDrag(){
+function stopDrag() {
   if (!isDragging) return;
+
   isDragging = false;
 
-  if (currentRotation > 28){
-    isOpened = true;
+  if (currentRotation > 28) {
+    openPack();
+  } else {
+    resetPack();
   }
 }
 
-function getX(e){
+function openPack() {
+  isOpened = true;
+
+  rightPack.style.transition = "transform 0.2s ease-out";
+
+  // micro apertura (feedback)
+  rightPack.style.transform =
+    `rotateZ(8deg) translateX(10px) translateY(6px)`;
+
+  inside.style.width = "80px";
+  inside.style.opacity = "0.6";
+
+  setTimeout(() => {
+    rightPack.style.transition =
+      "transform 1.8s cubic-bezier(.16,.72,.2,1), opacity 0.6s ease 1.2s";
+
+    rightPack.style.transform =
+      `rotateZ(22deg) translateX(18px) translateY(850px)`;
+
+    setTimeout(() => {
+      rightPack.style.opacity = "0";
+    }, 1200);
+
+  }, 220);
+}
+
+function resetPack() {
+  rightPack.style.transition = "transform 0.35s ease";
+  rightPack.style.transform = "rotateZ(0deg) translateX(0px)";
+  inside.style.width = "0px";
+  inside.style.opacity = "0.25";
+  currentRotation = 0;
+}
+
+function getX(e) {
   return e.touches ? e.touches[0].clientX : e.clientX;
 }
 
+/* ========================= */
 /* GALLETITAS */
+/* ========================= */
+
 leftPack.addEventListener("click", spawnCookie);
 
-function spawnCookie(){
+function spawnCookie() {
   if (!isOpened) return;
   if (cookieIndex >= 8) return;
 
@@ -96,7 +147,10 @@ function spawnCookie(){
   cookieIndex++;
 }
 
-/* FASE 4 */
+/* ========================= */
+/* FASE 4 (CIRCULAR FIX LIGHT) */
+/* ========================= */
+
 cookieElements.forEach((cookie, index) => {
 
   let isPressing = false;
@@ -104,15 +158,15 @@ cookieElements.forEach((cookie, index) => {
   let progress = 0;
 
   cookie.addEventListener("mousedown", startCircle);
-  cookie.addEventListener("touchstart", startCircle);
+  cookie.addEventListener("touchstart", startCircle, { passive: true });
 
   window.addEventListener("mousemove", moveCircle);
-  window.addEventListener("touchmove", moveCircle);
+  window.addEventListener("touchmove", moveCircle, { passive: true });
 
   window.addEventListener("mouseup", endCircle);
   window.addEventListener("touchend", endCircle);
 
-  function startCircle(e){
+  function startCircle(e) {
     if (!cookie.classList.contains("show")) return;
 
     isPressing = true;
@@ -122,34 +176,35 @@ cookieElements.forEach((cookie, index) => {
     lastAngle = Math.atan2(pos.y, pos.x);
   }
 
-  function moveCircle(e){
+  function moveCircle(e) {
     if (!isPressing) return;
 
     const pos = getPos(e, cookie);
     const angle = Math.atan2(pos.y, pos.x);
 
     let delta = angle - lastAngle;
+
     if (delta > Math.PI) delta -= Math.PI * 2;
     if (delta < -Math.PI) delta += Math.PI * 2;
 
     progress += Math.abs(delta);
     lastAngle = angle;
 
-    const scale = 1 + Math.min(progress * 0.3, 0.25);
+    const scale = 1 + Math.min(progress * 0.25, 0.3);
 
-    cookie.style.transform = `scale(${scale})`;
+    cookie.style.transform = `translate(-50%, -50%) scale(${scale})`;
 
-    if (progress > 3.5){
+    if (progress > 3.2) {
       activateCookie(index);
       isPressing = false;
     }
   }
 
-  function endCircle(){
+  function endCircle() {
     isPressing = false;
   }
 
-  function getPos(e, el){
+  function getPos(e, el) {
     const rect = el.getBoundingClientRect();
 
     const x = (e.touches ? e.touches[0].clientX : e.clientX)
@@ -162,8 +217,11 @@ cookieElements.forEach((cookie, index) => {
   }
 });
 
+/* ========================= */
 /* ACTIVACIÓN FINAL */
-function activateCookie(index){
+/* ========================= */
+
+function activateCookie(index) {
   const cookie = cookieElements[index];
 
   cookie.classList.add("open");
