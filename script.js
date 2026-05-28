@@ -105,18 +105,37 @@ function stopDrag(){
 
   isDragging = false;
 
-  rightPack.style.transition =
-  "transform 0.45s cubic-bezier(.2,.8,.2,1)";
-
   if(currentRotation > 75){
-
-    updatePack(150);
 
     isOpened = true;
 
     rightPack.style.cursor = "default";
 
+    /* ABRIR COMPLETO */
+
+    updatePack(150);
+
+    /* PEQUEÑA PAUSA */
+
+    setTimeout(()=>{
+
+      rightPack.classList.add("falling");
+
+      rightPack.style.transform =
+      `
+        perspective(2200px)
+        rotateY(-95deg)
+        rotateZ(28deg)
+        translateX(120px)
+        translateY(520px)
+      `;
+
+    },120);
+
   }else{
+
+    rightPack.style.transition =
+    "transform 0.45s cubic-bezier(.2,.8,.2,1)";
 
     updatePack(0);
   }
