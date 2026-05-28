@@ -266,11 +266,17 @@ body::before{
   overflow:hidden;
 }
 
-/* ELIMINAR EFECTOS FEOS */
+/* FLAP DESPRENDIDO */
 
-.right-pack::before,
-.right-pack::after{
-  display:none;
+.right-pack.falling{
+
+  pointer-events:none;
+
+  transition:
+    transform 1.2s cubic-bezier(.15,.7,.2,1),
+    opacity 1.2s ease;
+
+  opacity:0;
 }
 
 /* INTERIOR */
