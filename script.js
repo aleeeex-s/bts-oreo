@@ -16,10 +16,10 @@ passwordInput.addEventListener("keydown", e => {
   if (e.key === "Enter") checkPassword();
 });
 
-function checkPassword() {
+function checkPassword(){
   const password = passwordInput.value;
 
-  if (password === "BTSXSIEMPRE") {
+  if(password === "BTSXSIEMPRE"){
     loginScreen.style.opacity = "0";
 
     setTimeout(() => {
@@ -32,14 +32,10 @@ function checkPassword() {
   }
 }
 
-/* ========================= */
-/* PAQUETE (FIX REAL) */
-/* ========================= */
-
+/* PAQUETE */
 let isDragging = false;
 let startX = 0;
-let lastX = 0;
-let openProgress = 0;   // 🔥 FIX: reemplaza currentRotation
+let progress = 0;
 let isOpened = false;
 let cookieIndex = 0;
 
@@ -47,49 +43,43 @@ rightPack.addEventListener("mousedown", startDrag);
 window.addEventListener("mousemove", drag);
 window.addEventListener("mouseup", stopDrag);
 
-rightPack.addEventListener("touchstart", startDrag, { passive: true });
-window.addEventListener("touchmove", drag, { passive: true });
+rightPack.addEventListener("touchstart", startDrag);
+window.addEventListener("touchmove", drag);
 window.addEventListener("touchend", stopDrag);
 
 function startDrag(e){
-  if (isOpened) return;
+  if(isOpened) return;
 
   isDragging = true;
   startX = getX(e);
-  lastX = startX;
 
   rightPack.style.transition = "none";
 }
 
 function drag(e){
-  if (!isDragging || isOpened) return;
+  if(!isDragging || isOpened) return;
 
-  const x = getX(e);
-  let delta = x - lastX;
-  lastX = x;
+  let move = getX(e) - startX;
+  if(move < 0) move = 0;
+  if(move > 80) move = 80;
 
-  if (delta < 0) delta = 0;
+  progress = move;
 
-  // 🔥 FIX CLAVE: acumulación estable
-  openProgress += delta * 0.12;
-
-  if (openProgress > 70) openProgress = 70;
-
-  const rotate = openProgress * -0.18;
+  const rotate = move * -0.18;
 
   rightPack.style.transform =
-    `rotateZ(${rotate}deg) translateX(${openProgress * 0.08}px)`;
+    `rotateZ(${rotate}deg) translateX(${move * 0.08}px)`;
 
-  inside.style.width = `${openProgress * 1.1}px`;
-  inside.style.opacity = 0.2 + (openProgress / 140);
+  inside.style.width = `${move * 1.1}px`;
+  inside.style.opacity = 0.2 + (move / 140);
 }
 
 function stopDrag(){
-  if (!isDragging) return;
+  if(!isDragging) return;
 
   isDragging = false;
 
-  if (openProgress > 28){
+  if(progress > 28){
     openPack();
   } else {
     resetPack();
@@ -103,9 +93,6 @@ function openPack(){
 
   rightPack.style.transform =
     `rotateZ(8deg) translateX(10px) translateY(6px)`;
-
-  inside.style.width = "80px";
-  inside.style.opacity = "0.6";
 
   setTimeout(() => {
     rightPack.style.transition =
@@ -122,9 +109,9 @@ function openPack(){
 }
 
 function resetPack(){
-  openProgress = 0;
+  progress = 0;
 
-  rightPack.style.transition = "transform 0.35s ease";
+  rightPack.style.transition = "transform 0.3s ease";
   rightPack.style.transform = "rotateZ(0deg) translateX(0px)";
 
   inside.style.width = "0px";
@@ -139,8 +126,8 @@ function getX(e){
 leftPack.addEventListener("click", spawnCookie);
 
 function spawnCookie(){
-  if (!isOpened) return;
-  if (cookieIndex >= 8) return;
+  if(!isOpened) return;
+  if(cookieIndex >= 8) return;
 
   const cookie = cookieElements[cookieIndex];
 
@@ -156,16 +143,16 @@ cookieElements.forEach((cookie, index) => {
   let progress = 0;
 
   cookie.addEventListener("mousedown", startCircle);
-  cookie.addEventListener("touchstart", startCircle, { passive: true });
+  cookie.addEventListener("touchstart", startCircle);
 
   window.addEventListener("mousemove", moveCircle);
-  window.addEventListener("touchmove", moveCircle, { passive: true });
+  window.addEventListener("touchmove", moveCircle);
 
   window.addEventListener("mouseup", endCircle);
   window.addEventListener("touchend", endCircle);
 
   function startCircle(e){
-    if (!cookie.classList.contains("show")) return;
+    if(!cookie.classList.contains("show")) return;
 
     isPressing = true;
     progress = 0;
@@ -175,15 +162,14 @@ cookieElements.forEach((cookie, index) => {
   }
 
   function moveCircle(e){
-    if (!isPressing) return;
+    if(!isPressing) return;
 
     const pos = getPos(e, cookie);
     const angle = Math.atan2(pos.y, pos.x);
 
     let delta = angle - lastAngle;
-
-    if (delta > Math.PI) delta -= Math.PI * 2;
-    if (delta < -Math.PI) delta += Math.PI * 2;
+    if(delta > Math.PI) delta -= Math.PI * 2;
+    if(delta < -Math.PI) delta += Math.PI * 2;
 
     progress += Math.abs(delta);
     lastAngle = angle;
@@ -193,7 +179,7 @@ cookieElements.forEach((cookie, index) => {
     cookie.style.transform =
       `translate(-50%, -50%) scale(${scale})`;
 
-    if (progress > 3.2){
+    if(progress > 3.2){
       activateCookie(index);
       isPressing = false;
     }
@@ -216,7 +202,6 @@ cookieElements.forEach((cookie, index) => {
   }
 });
 
-/* ACTIVACIÓN FINAL */
 function activateCookie(index){
   const cookie = cookieElements[index];
 
