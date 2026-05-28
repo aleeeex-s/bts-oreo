@@ -124,19 +124,19 @@ function stopDrag(){
 
 function updatePack(move){
 
-  let rotate = move * -0.72;
-
-  let depth = move * 0.18;
+  let rotate = move * -0.52;
 
   rightPack.style.transform =
   `
-    perspective(1800px)
+    perspective(2200px)
     rotateY(${rotate}deg)
-    translateX(${move * 0.42}px)
-    translateZ(${depth}px)
+    translateX(${move * 0.22}px)
   `;
 
-  inside.style.width = `${move * 1.15}px`;
+  inside.style.width = `${move * 0.82}px`;
+
+  inside.style.opacity =
+  0.4 + (move / 150);
 }
 
 function getX(e){
