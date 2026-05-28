@@ -329,7 +329,7 @@ body::after{
     width 0.08s linear,
     opacity 0.08s linear;
 
-  overflow:hidden;
+  overflow:visible;
 
   opacity:0.25;
 
@@ -362,9 +362,19 @@ body::after{
 .cookies{
   position:absolute;
 
-  inset:0;
+  top:50%;
+
+  left:0;
+
+  width:700px;
+
+  height:300px;
+
+  transform:translateY(-50%);
 
   pointer-events:none;
+
+  overflow:visible;
 }
 
 /* GALLETITA */
@@ -374,7 +384,7 @@ body::after{
 
   width:155px;
 
-  left:-220px;
+  left:-120px;
 
   top:50%;
 
@@ -408,7 +418,7 @@ body::after{
 
 .cookies.show .c1{
   transform:
-    translate(120px,-50%)
+    translate(180px,-50%)
     rotate(-8deg)
     scale(1);
 
@@ -419,7 +429,7 @@ body::after{
 
 .cookies.show .c2{
   transform:
-    translate(90px,-30%)
+    translate(150px,-30%)
     rotate(-4deg)
     scale(0.98);
 
@@ -430,7 +440,7 @@ body::after{
 
 .cookies.show .c3{
   transform:
-    translate(60px,-70%)
+    translate(120px,-70%)
     rotate(-1deg)
     scale(0.96);
 
@@ -441,7 +451,7 @@ body::after{
 
 .cookies.show .c4{
   transform:
-    translate(30px,-42%)
+    translate(90px,-42%)
     rotate(3deg)
     scale(0.94);
 
@@ -452,7 +462,7 @@ body::after{
 
 .cookies.show .c5{
   transform:
-    translate(0px,-60%)
+    translate(60px,-60%)
     rotate(6deg)
     scale(0.92);
 
@@ -463,7 +473,7 @@ body::after{
 
 .cookies.show .c6{
   transform:
-    translate(-25px,-48%)
+    translate(30px,-48%)
     rotate(8deg)
     scale(0.9);
 
@@ -474,7 +484,7 @@ body::after{
 
 .cookies.show .c7{
   transform:
-    translate(-45px,-58%)
+    translate(0px,-58%)
     rotate(11deg)
     scale(0.88);
 
@@ -485,7 +495,7 @@ body::after{
 
 .cookies.show .c8{
   transform:
-    translate(-65px,-50%)
+    translate(-30px,-50%)
     rotate(14deg)
     scale(0.86);
 
