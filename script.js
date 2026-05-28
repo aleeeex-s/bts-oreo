@@ -223,7 +223,7 @@ cookieElements.forEach((cookie,index)=>{
     lastAngle = Math.atan2(pos.y,pos.x);
   }
 
-  function moveCircle(e){
+function moveCircle(e){
 
     if(!isPressing) return;
 
@@ -245,13 +245,17 @@ cookieElements.forEach((cookie,index)=>{
 
     lastAngle = angle;
 
-    const scale =
-      1 + Math.min(progress * 0.03,0.12);
+    const scale = 1 + Math.min(progress * 0.03, 0.12);
 
     cookie.style.filter = `
       brightness(${1 + progress * 0.03})
       drop-shadow(0 0 25px rgba(255,255,255,0.35))
     `;
+
+    // FIX: Aplicamos la escala dinámicamente usando variables de CSS sin romper el translate original
+    cookie.style.transform = window.getComputedStyle(cookie).transform.split('(')[0] === 'matrix' 
+      ? window.getComputedStyle(cookie).transform + ` scale(${scale})` 
+      : "";
 
     if(progress > 6){
 
