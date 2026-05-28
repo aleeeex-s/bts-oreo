@@ -32,75 +32,85 @@ function checkPassword(){
 }
 
 /* ========================= */
-/* PAQUETE (FIX DEFINITIVO) */
+/* PAQUETE PRO ESTABLE */
 /* ========================= */
 
-let dragging = false;
-let startX = 0;
-let move = 0;
-let opened = false;
-let cookieIndex = 0;
+let isDragging = false;
+let isOpened = false;
+let openProgress = 0;
 
-rightPack.addEventListener("mousedown", start);
-window.addEventListener("mousemove", movePack);
-window.addEventListener("mouseup", end);
+const maxOpen = 90; // px visual
 
-rightPack.addEventListener("touchstart", start);
-window.addEventListener("touchmove", movePack);
-window.addEventListener("touchend", end);
+rightPack.addEventListener("mousedown", startDrag);
+window.addEventListener("mousemove", onDrag);
+window.addEventListener("mouseup", endDrag);
 
-function start(e){
-  if (opened) return;
+rightPack.addEventListener("touchstart", startDrag);
+window.addEventListener("touchmove", onDrag);
+window.addEventListener("touchend", endDrag);
 
-  dragging = true;
-  startX = getX(e);
+function startDrag(e){
+  if (isOpened) return;
+  isDragging = true;
 }
 
-function movePack(e){
-  if (!dragging || opened) return;
+function onDrag(e){
+  if (!isDragging || isOpened) return;
 
-  move = getX(e) - startX;
+  const x = getX(e);
+  const rect = rightPack.parentElement.getBoundingClientRect();
 
-  if (move < 0) move = 0;
-  if (move > 90) move = 90;
+  // 🔥 normalizamos dentro del pack
+  let progress = x - rect.left;
 
-  const rotate = move * -0.2;
+  if (progress < 0) progress = 0;
+  if (progress > maxOpen) progress = maxOpen;
 
-  rightPack.style.transform =
-    `rotateZ(${rotate}deg) translateX(${move * 0.1}px)`;
+  openProgress = progress / maxOpen; // 0 → 1
 
-  inside.style.width = `${move * 1.2}px`;
-  inside.style.opacity = 0.2 + (move / 120);
+  applyPack(openProgress);
 }
 
-function end(){
-  if (!dragging) return;
+function endDrag(){
+  if (!isDragging) return;
+  isDragging = false;
 
-  dragging = false;
-
-  console.log("MOVE FINAL:", move); // 🔥 DEBUG CLAVE
-
-  if (move > 25){
+  if (openProgress > 0.35){
     openPack();
   } else {
     resetPack();
   }
 }
 
-function openPack(){
-  opened = true;
+function applyPack(p){
+  const rotate = p * -18;
+  const moveX = p * 18;
 
-  rightPack.style.transition = "transform 0.2s ease";
+  rightPack.style.transform =
+    `rotateZ(${rotate}deg) translateX(${moveX}px)`;
+
+  inside.style.width = `${p * 100}px`;
+  inside.style.opacity = 0.2 + (p * 0.6);
+}
+
+/* ========================= */
+/* OPEN FINAL SEGURO */
+/* ========================= */
+
+function openPack(){
+  isOpened = true;
+
+  rightPack.style.transition = "transform 0.25s ease";
 
   rightPack.style.transform =
     `rotateZ(10deg) translateX(10px) translateY(5px)`;
 
   setTimeout(() => {
     rightPack.style.transition =
-      "transform 1.8s cubic-bezier(.16,.72,.2,1), opacity 0.6s ease 1.2s";
+      "transform 1.6s cubic-bezier(.16,.72,.2,1), opacity 0.5s ease 1.2s";
 
     rightPack.style.transform =
-      `rotateZ(25deg) translateX(25px) translateY(900px)`;
+      `rotateZ(25deg) translateX(30px) translateY(900px)`;
 
     setTimeout(() => {
       rightPack.style.opacity = "0";
@@ -110,7 +120,9 @@ function openPack(){
 }
 
 function resetPack(){
-  rightPack.style.transition = "transform 0.3s ease";
+  openProgress = 0;
+
+  rightPack.style.transition = "transform 0.25s ease";
 
   rightPack.style.transform = "rotateZ(0deg) translateX(0px)";
   inside.style.width = "0px";
@@ -122,13 +134,15 @@ function getX(e){
 }
 
 /* ========================= */
-/* GALLETITAS */
+/* GALLETITAS (NO TOCADO) */
 /* ========================= */
+
+let cookieIndex = 0;
 
 leftPack.addEventListener("click", spawnCookie);
 
 function spawnCookie(){
-  if (!opened) return;
+  if (!isOpened) return;
   if (cookieIndex >= 8) return;
 
   const cookie = cookieElements[cookieIndex];
