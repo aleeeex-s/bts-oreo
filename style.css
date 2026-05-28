@@ -126,15 +126,14 @@ body::after{
   pointer-events:none;
 }
 
-/* CONTENEDOR CENTRADO REAL */
+/* CONTENEDOR CENTRADO CORRECTO */
 .pack-container{
   position:relative;
   width:700px;
   height:420px;
   overflow:visible;
 
-  left:50%;
-  transform:translateX(-50%);
+  margin:0 auto; /* 🔥 FIX REAL DE CENTRADO */
 
   animation:float 5s ease-in-out infinite;
 }
@@ -161,7 +160,7 @@ body::after{
   z-index:2;
 }
 
-/* DERECHA (ABERTURA REAL) */
+/* DERECHA (ABERTURA) */
 .right-pack{
   right:0;
   width:54px;
@@ -169,16 +168,16 @@ body::after{
   z-index:4;
 }
 
-/* GALLETITAS CONTENEDOR */
+/* GALLETITAS */
 .cookies{
   position:absolute;
 
   top:50%;
-  right:0; /* 🔥 pegado a la abertura real */
+  right:0; /* 🔥 alineado con abertura */
 
   transform:translate(0,-50%);
 
-  width:300px; /* 🔥 importante: evita efecto “fantasma” */
+  width:300px;
   height:300px;
 
   overflow:visible;
@@ -188,7 +187,7 @@ body::after{
   pointer-events:none;
 }
 
-/* GALLETAS */
+/* COOKIE */
 .cookie{
   position:absolute;
 
@@ -200,7 +199,6 @@ body::after{
 
   opacity:0;
 
-  /* 🔥 SALIDA REAL DESDE LA ABERTURA (no fade central) */
   transform:
     translateX(40px)
     translateY(-50%)
@@ -225,7 +223,7 @@ body::after{
   opacity:1;
 }
 
-/* POSICIONES (derecha → izquierda) */
+/* POSICIONES */
 .cookie.pos1{ transform: translate(-820px,-50%) rotate(-8deg) scale(1); }
 .cookie.pos2{ transform: translate(-680px,-50%) rotate(5deg) scale(1); }
 .cookie.pos3{ transform: translate(-540px,-50%) rotate(-5deg) scale(1); }
