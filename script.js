@@ -54,7 +54,10 @@ function checkPassword(){
 /* PAQUETE */
 
 const rightPack = document.getElementById("rightPack");
+
 const inside = document.querySelector(".inside");
+
+const cookies = document.getElementById("cookies");
 
 let isDragging = false;
 
@@ -65,11 +68,15 @@ let currentRotation = 0;
 let isOpened = false;
 
 rightPack.addEventListener("mousedown", startDrag);
+
 window.addEventListener("mousemove", drag);
+
 window.addEventListener("mouseup", stopDrag);
 
 rightPack.addEventListener("touchstart", startDrag);
+
 window.addEventListener("touchmove", drag);
+
 window.addEventListener("touchend", stopDrag);
 
 function startDrag(e){
@@ -92,6 +99,7 @@ function drag(e){
   let move = currentX - startX;
 
   if(move < 0) move = 0;
+
   if(move > 60) move = 60;
 
   currentRotation = move;
@@ -111,12 +119,20 @@ function stopDrag(){
 
     rightPack.style.cursor = "default";
 
-    /* APERTURA PEQUEÑA */
+    /* APERTURA */
 
     rightPack.style.transition =
     "transform 0.16s ease-out";
 
     updatePack(60);
+
+    /* SALIDA GALLETITAS */
+
+    setTimeout(()=>{
+
+      cookies.classList.add("show");
+
+    },280);
 
     /* DESPEGUE */
 
