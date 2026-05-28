@@ -266,15 +266,15 @@ body::before{
   overflow:hidden;
 }
 
-/* FLAP DESPRENDIDO */
+/* FLAP CAÍDA */
 
 .right-pack.falling{
 
   pointer-events:none;
 
   transition:
-    transform 1.2s cubic-bezier(.15,.7,.2,1),
-    opacity 1.2s ease;
+    transform 1.8s cubic-bezier(.12,.72,.18,1),
+    opacity 1.8s ease;
 
   opacity:0;
 }
