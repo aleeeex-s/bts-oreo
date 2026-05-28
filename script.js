@@ -111,32 +111,48 @@ function stopDrag(){
 
     rightPack.style.cursor = "default";
 
-    /* ABRE COMPLETO */
+    /* APERTURA */
 
     rightPack.style.transition =
-    "transform 0.28s ease-out";
+    "transform 0.18s ease-out";
 
     updatePack(150);
 
-    /* SE DESPEGA */
+    /* DESPEGUE */
 
     setTimeout(()=>{
 
       rightPack.style.transition =
-      "transform 0.42s cubic-bezier(.2,.9,.2,1)";
+      "transform 0.16s ease-out";
 
       rightPack.style.transform =
       `
-        perspective(2200px)
-        rotateY(-102deg)
-        rotateZ(10deg)
-        translateX(35px)
-        translateY(20px)
+        rotateY(-18deg)
+        rotateZ(4deg)
+        translateX(10px)
+        translateY(4px)
       `;
 
-    },180);
+    },110);
 
-    /* CAE */
+    /* FLEXIÓN */
+
+    setTimeout(()=>{
+
+      rightPack.style.transition =
+      "transform 0.22s ease-in";
+
+      rightPack.style.transform =
+      `
+        rotateY(-6deg)
+        rotateZ(16deg)
+        translateX(26px)
+        translateY(70px)
+      `;
+
+    },260);
+
+    /* CAÍDA REAL */
 
     setTimeout(()=>{
 
@@ -144,19 +160,18 @@ function stopDrag(){
 
       rightPack.style.transform =
       `
-        perspective(2200px)
-        rotateY(-120deg)
-        rotateZ(42deg)
-        translateX(160px)
-        translateY(850px)
+        rotateY(0deg)
+        rotateZ(72deg)
+        translateX(120px)
+        translateY(980px)
       `;
 
-    },620);
+    },420);
 
   }else{
 
     rightPack.style.transition =
-    "transform 0.45s cubic-bezier(.2,.8,.2,1)";
+    "transform 0.35s ease";
 
     updatePack(0);
   }
@@ -164,19 +179,19 @@ function stopDrag(){
 
 function updatePack(move){
 
-  let rotate = move * -0.52;
+  let rotate = move * -0.42;
 
   rightPack.style.transform =
   `
-    perspective(2200px)
     rotateY(${rotate}deg)
-    translateX(${move * 0.22}px)
+    translateX(${move * 0.18}px)
   `;
 
-  inside.style.width = `${move * 0.82}px`;
+  inside.style.width =
+  `${move * 0.82}px`;
 
   inside.style.opacity =
-  0.4 + (move / 150);
+  0.35 + (move / 170);
 }
 
 function getX(e){
