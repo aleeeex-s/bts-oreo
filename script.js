@@ -140,7 +140,7 @@ function getX(e) {
 }
 
 /* ========================= */
-/* GALLETITAS (FIX REAL) */
+/* GALLETITAS (FIX ESTABLE) */
 /* ========================= */
 
 leftPack.addEventListener("click", spawnCookie);
