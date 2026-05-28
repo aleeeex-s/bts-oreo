@@ -56,7 +56,7 @@ let currentRotation = 0;
 let isOpened = false;
 let cookieIndex = 0;
 
-/* DRAG */
+/* DRAG EVENTS */
 
 rightPack.addEventListener("mousedown", startDrag);
 window.addEventListener("mousemove", drag);
@@ -140,7 +140,7 @@ function getX(e) {
 }
 
 /* ========================= */
-/* GALLETITAS (FIX ESTABLE) */
+/* GALLETITAS */
 /* ========================= */
 
 leftPack.addEventListener("click", spawnCookie);
@@ -155,4 +155,87 @@ function spawnCookie() {
   cookie.classList.add(`pos${cookieIndex + 1}`);
 
   cookieIndex++;
+}
+
+/* ========================= */
+/* FASE 3: GESTO CIRCULAR */
+/* ========================= */
+
+cookieElements.forEach((cookie, index) => {
+
+  let isPressing = false;
+  let lastAngle = 0;
+
+  cookie.addEventListener("mousedown", startCircle);
+  cookie.addEventListener("touchstart", startCircle);
+
+  window.addEventListener("mousemove", moveCircle);
+  window.addEventListener("touchmove", moveCircle);
+
+  window.addEventListener("mouseup", endCircle);
+  window.addEventListener("touchend", endCircle);
+
+  function startCircle(e) {
+    if (!cookie.classList.contains("show")) return;
+
+    isPressing = true;
+
+    const pos = getPos(e, cookie);
+    lastAngle = Math.atan2(pos.y, pos.x);
+
+    e.stopPropagation();
+  }
+
+  function moveCircle(e) {
+    if (!isPressing) return;
+
+    const pos = getPos(e, cookie);
+    const angle = Math.atan2(pos.y, pos.x);
+
+    let delta = angle - lastAngle;
+
+    if (delta > Math.PI) delta -= Math.PI * 2;
+    if (delta < -Math.PI) delta += Math.PI * 2;
+
+    const progress = Math.abs(delta);
+
+    cookie.dataset.progress = (parseFloat(cookie.dataset.progress || 0) + progress);
+
+    lastAngle = angle;
+
+    const p = parseFloat(cookie.dataset.progress);
+
+    cookie.style.transform += ` scale(${1 + Math.min(p / 6, 0.25)})`;
+
+    if (p > 4) {
+      activateCookie(index);
+      isPressing = false;
+    }
+
+    e.stopPropagation();
+  }
+
+  function endCircle() {
+    isPressing = false;
+  }
+
+  function getPos(e, el) {
+    const rect = el.getBoundingClientRect();
+
+    const x = (e.touches ? e.touches[0].clientX : e.clientX)
+      - rect.left - rect.width / 2;
+
+    const y = (e.touches ? e.touches[0].clientY : e.clientY)
+      - rect.top - rect.height / 2;
+
+    return { x, y };
+  }
+});
+
+/* ACTIVACIÓN */
+function activateCookie(index) {
+  const cookie = cookieElements[index];
+
+  cookie.style.transition = "transform 0.6s ease, opacity 0.6s ease";
+  cookie.style.transform += " scale(1.4) rotate(10deg)";
 }
