@@ -92,7 +92,7 @@ function drag(e){
   let move = currentX - startX;
 
   if(move < 0) move = 0;
-  if(move > 140) move = 140;
+  if(move > 150) move = 150;
 
   currentRotation = move;
 
@@ -105,11 +105,12 @@ function stopDrag(){
 
   isDragging = false;
 
-  rightPack.style.transition = "0.4s ease";
+  rightPack.style.transition =
+  "transform 0.45s cubic-bezier(.2,.8,.2,1)";
 
-  if(currentRotation > 70){
+  if(currentRotation > 75){
 
-    updatePack(140);
+    updatePack(150);
 
     isOpened = true;
 
@@ -123,14 +124,19 @@ function stopDrag(){
 
 function updatePack(move){
 
-  let rotate = move * -0.6;
+  let rotate = move * -0.72;
+
+  let depth = move * 0.18;
 
   rightPack.style.transform =
-    `perspective(1200px)
-     rotateY(${rotate}deg)
-     translateX(${move * 0.35}px)`;
+  `
+    perspective(1800px)
+    rotateY(${rotate}deg)
+    translateX(${move * 0.42}px)
+    translateZ(${depth}px)
+  `;
 
-  inside.style.width = `${move * 0.9}px`;
+  inside.style.width = `${move * 1.15}px`;
 }
 
 function getX(e){
