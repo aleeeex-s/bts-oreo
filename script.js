@@ -1,43 +1,82 @@
-const passwordInput = document.getElementById("passwordInput");
-const enterBtn = document.getElementById("enterBtn");
-const errorText = document.getElementById("errorText");
-const loginScreen = document.getElementById("loginScreen");
-const mainScene = document.getElementById("mainScene");
+const passwordInput =
+document.getElementById("passwordInput");
 
-const rightPack = document.getElementById("rightPack");
-const leftPack = document.querySelector(".left-pack");
-const inside = document.querySelector(".inside");
+const enterBtn =
+document.getElementById("enterBtn");
 
-const cookieElements = document.querySelectorAll(".cookie");
+const errorText =
+document.getElementById("errorText");
+
+const loginScreen =
+document.getElementById("loginScreen");
+
+const mainScene =
+document.getElementById("mainScene");
+
+const rightPack =
+document.getElementById("rightPack");
+
+const leftPack =
+document.querySelector(".left-pack");
+
+const inside =
+document.querySelector(".inside");
+
+const cookieElements =
+document.querySelectorAll(".cookie");
 
 /* ================================= */
 /* LOGIN */
 /* ================================= */
 
-enterBtn.addEventListener("click", checkPassword);
+enterBtn.addEventListener(
+"click",
+checkPassword
+);
 
-passwordInput.addEventListener("keydown", e => {
-  if(e.key === "Enter"){
-    checkPassword();
-  }
-});
+passwordInput.addEventListener(
+"keydown",
+e=>{
+if(e.key==="Enter"){
+checkPassword();
+}
+}
+);
 
 function checkPassword(){
-  // Pasamos a mayúsculas para evitar problemas con el tipeo
-  if(passwordInput.value.trim().toUpperCase() === "BTSXSIEMPRE"){
-    
-    // Agrega la clase que maneja la transición de opacidad
-    loginScreen.classList.add("hide-login");
 
-    setTimeout(()=>{
-      loginScreen.style.display = "none";
-      // Muestra la escena principal quitando el display: none
-      mainScene.classList.remove("hidden");
-    }, 800);
+if(
+passwordInput.value
+.trim()
+.toUpperCase()
+=== "BTSXSIEMPRE"
+){
 
-  }else{
-    errorText.innerText = "WRONG PASSWORD";
-  }
+```
+loginScreen.classList.add(
+  "hide-login"
+);
+
+setTimeout(()=>{
+
+  loginScreen.style.display =
+  "none";
+
+  mainScene.classList.remove(
+    "hidden"
+  );
+
+},800);
+```
+
+}else{
+
+```
+errorText.innerText =
+"WRONG PASSWORD";
+```
+
+}
 }
 
 /* ================================= */
@@ -45,7 +84,9 @@ function checkPassword(){
 /* ================================= */
 
 let isDragging = false;
+
 let startX = 0;
+
 let move = 0;
 
 let isOpened = false;
@@ -54,186 +95,384 @@ let cookieIndex = 0;
 
 /* EVENTOS */
 
-rightPack.addEventListener("mousedown", startDrag);
-window.addEventListener("mousemove", drag);
-window.addEventListener("mouseup", stopDrag);
+rightPack.addEventListener(
+"mousedown",
+startDrag
+);
 
-rightPack.addEventListener("touchstart", startDrag, {passive: true});
-window.addEventListener("touchmove", drag, {passive: false});
-window.addEventListener("touchend", stopDrag);
+window.addEventListener(
+"mousemove",
+drag
+);
+
+window.addEventListener(
+"mouseup",
+stopDrag
+);
+
+rightPack.addEventListener(
+"touchstart",
+startDrag,
+{ passive:true }
+);
+
+window.addEventListener(
+"touchmove",
+drag,
+{ passive:false }
+);
+
+window.addEventListener(
+"touchend",
+stopDrag
+);
 
 /* START */
 
 function startDrag(e){
-  if(isOpened) return;
-  isDragging = true;
-  startX = getX(e);
-  rightPack.style.transition = "none";
+
+if(isOpened) return;
+
+isDragging = true;
+
+startX = getX(e);
+
+rightPack.style.transition =
+"none";
 }
 
 /* MOVE */
 
 function drag(e){
-  if(!isDragging) return;
-  
-  move = getX(e) - startX;
 
-  if(move < 0) move = 0;
-  if(move > 60) move = 60;
+if(!isDragging) return;
 
-  updatePack(move);
+move = getX(e) - startX;
+
+if(move < 0) move = 0;
+
+if(move > 60) move = 60;
+
+updatePack(move);
 }
 
 /* END */
 
 function stopDrag(){
-  if(!isDragging) return;
-  isDragging = false;
 
-  /* ABRIR */
-  if(move > 28){
-    isOpened = true;
+if(!isDragging) return;
 
-    /* APERTURA FINAL */
-    rightPack.style.transition = "transform 0.18s ease-out";
-    updatePack(60);
+isDragging = false;
 
-    /* DESPEGUE */
-    setTimeout(()=>{
-      rightPack.style.transform = `
-        rotateZ(10deg)
-        translateX(10px)
-        translateY(6px)
-      `;
-    },120);
+if(move > 28){
 
-    /* CAÍDA */
-    setTimeout(()=>{
-      rightPack.style.transition = "transform 2s cubic-bezier(.16,.72,.2,1), opacity 0.4s linear 1.5s";
-      rightPack.style.transform = `
-        rotateZ(25deg)
-        translateX(30px)
-        translateY(900px)
-      `;
+```
+isOpened = true;
 
-      setTimeout(()=>{
-        rightPack.style.opacity = "0";
-        rightPack.style.display = "none"; // Elimina el elemento para que no bloquee clicks
-      },1500);
-    },260);
+rightPack.style.transition =
+"transform .18s ease-out";
 
-  }else{
-    /* CERRAR */
-    rightPack.style.transition = "transform 0.35s ease";
-    updatePack(0);
-  }
+updatePack(60);
+
+setTimeout(()=>{
+
+  rightPack.style.transform =
+  `
+    rotateZ(10deg)
+    translateX(10px)
+    translateY(6px)
+  `;
+
+},120);
+
+setTimeout(()=>{
+
+  rightPack.style.transition =
+  `
+    transform 2s cubic-bezier(.16,.72,.2,1),
+    opacity .4s linear 1.5s
+  `;
+
+  rightPack.style.transform =
+  `
+    rotateZ(25deg)
+    translateX(30px)
+    translateY(900px)
+  `;
+
+  setTimeout(()=>{
+
+    rightPack.style.opacity = "0";
+
+    rightPack.style.display =
+    "none";
+
+  },1500);
+
+},260);
+```
+
+}else{
+
+```
+rightPack.style.transition =
+"transform .35s ease";
+
+updatePack(0);
+```
+
+}
 }
 
 /* UPDATE */
 
 function updatePack(m){
-  const rotate = m * -0.15;
 
-  rightPack.style.transform = `
-    rotateZ(${rotate}deg)
+const rotate = m * -0.15;
+
+rightPack.style.transform =
+`     rotateZ(${rotate}deg)
     translateX(${m * 0.08}px)
   `;
 
-  if(inside) {
-    // Sincronizado en píxeles según tu diseño original
-    inside.style.width = `${m * 1.1}px`; 
-    inside.style.opacity = 0.2 + (m / 120);
-  }
+inside.style.width =
+`${m * 1.1}px`;
+
+inside.style.opacity =
+0.2 + (m / 120);
 }
 
 /* GET X */
 
 function getX(e){
-  return e.touches ? e.touches[0].clientX : e.clientX;
+
+return e.touches
+? e.touches[0].clientX
+: e.clientX;
 }
 
 /* ================================= */
 /* GALLETITAS */
 /* ================================= */
 
-leftPack.addEventListener("click", spawnCookie);
+leftPack.addEventListener(
+"click",
+spawnCookie
+);
 
 function spawnCookie(){
-  if(!isOpened) return;
-  if(cookieIndex >= cookieElements.length) return;
 
-  const cookie = cookieElements[cookieIndex];
-  cookie.classList.add("show");
-  cookie.classList.add(`pos${cookieIndex + 1}`);
+if(!isOpened) return;
 
-  cookieIndex++;
+if(cookieIndex >= cookieElements.length)
+return;
+
+const cookie =
+cookieElements[cookieIndex];
+
+cookie.classList.add("show");
+
+cookie.classList.add(
+`pos${cookieIndex + 1}`
+);
+
+cookieIndex++;
 }
 
 /* ================================= */
-/* FASE 3 */
-/* GESTO CIRCULAR */
+/* FASE 3 + 4 */
 /* ================================= */
 
-cookieElements.forEach((cookie,index)=>{
-  let isPressing = false;
-  let lastAngle = 0;
-  let progress = 0;
+const phrases = [
 
-  cookie.addEventListener("mousedown", startCircle);
-  cookie.addEventListener("touchstart", startCircle, {passive: true});
-  window.addEventListener("mousemove", moveCircle);
-  window.addEventListener("touchmove", moveCircle, {passive: false});
-  window.addEventListener("mouseup", endCircle);
-  window.addEventListener("touchend", endCircle);
+"Dulce energía",
 
-  function startCircle(e){
-    if(!cookie.classList.contains("show")) return;
-    if(cookie.classList.contains("open")) return;
+"Golden hour",
 
-    isPressing = true;
-    progress = 0;
+"Stay soft",
 
-    const pos = getCookiePos(e,cookie);
-    lastAngle = Math.atan2(pos.y,pos.x);
-  }
+"Purple soul",
 
-  function moveCircle(e){
-    if(!isPressing) return;
+"Shine more",
 
-    const pos = getCookiePos(e,cookie);
-    const angle = Math.atan2(pos.y,pos.x);
-    let delta = angle - lastAngle;
+"Sweet vibes",
 
-    if(delta > Math.PI) delta -= Math.PI * 2;
-    if(delta < -Math.PI) delta += Math.PI * 2;
+"BTS forever",
 
-    progress += Math.abs(delta);
-    lastAngle = angle;
+"Enjoy moment"
+];
 
-    /* feedback visual */
-    const scale = 1 + Math.min(progress * 0.03, 0.12);
+/* CADA GALLETITA */
 
-    cookie.style.filter = `
-      brightness(${1 + progress * 0.03})
-      drop-shadow(0 0 25px rgba(255,255,255,0.35))
-    `;
-    
-    // Mantiene la posición original de la clase e incrementa escala temporal
-    cookie.style.transform = window.getComputedStyle(cookie).transform + ` scale(${scale})`;
+cookieElements.forEach(
+(cookie,index)=>{
 
-    /* ACTIVAR */
-    if(progress > 6){
-      activateCookie(cookie,index);
-      isPressing = false;
+let isPressing = false;
+
+let lastAngle = 0;
+
+let progress = 0;
+
+cookie.addEventListener(
+"mousedown",
+startCircle
+);
+
+cookie.addEventListener(
+"touchstart",
+startCircle,
+{ passive:true }
+);
+
+window.addEventListener(
+"mousemove",
+moveCircle
+);
+
+window.addEventListener(
+"touchmove",
+moveCircle,
+{ passive:false }
+);
+
+window.addEventListener(
+"mouseup",
+endCircle
+);
+
+window.addEventListener(
+"touchend",
+endCircle
+);
+
+/* START */
+
+function startCircle(e){
+
+```
+if(
+  !cookie.classList.contains("show")
+) return;
+
+if(
+  cookie.classList.contains("open")
+) return;
+
+isPressing = true;
+
+progress = 0;
+
+const pos =
+getCookiePos(e,cookie);
+
+lastAngle =
+Math.atan2(pos.y,pos.x);
+```
+
+}
+
+/* MOVE */
+
+function moveCircle(e){
+
+```
+if(!isPressing) return;
+
+const pos =
+getCookiePos(e,cookie);
+
+const angle =
+Math.atan2(pos.y,pos.x);
+
+let delta =
+angle - lastAngle;
+
+if(delta > Math.PI){
+  delta -= Math.PI * 2;
+}
+
+if(delta < -Math.PI){
+  delta += Math.PI * 2;
+}
+
+progress += Math.abs(delta);
+
+lastAngle = angle;
+
+/* LIMITE */
+
+const visualProgress =
+Math.min(progress,6);
+
+/* SCALE CONTROLADO */
+
+const scale =
+1 + (visualProgress * 0.015);
+
+/* glow */
+
+cookie.style.filter =
+`
+  brightness(${1 + visualProgress * 0.04})
+  drop-shadow(0 0 22px rgba(255,255,255,.35))
+`;
+
+/* NO ROMPE POSITION */
+
+cookie.style.opacity = "1";
+
+cookie.animate(
+  [
+    {
+      transform:
+      `
+        scale(1)
+      `
+    },
+    {
+      transform:
+      `
+        scale(${scale})
+      `
     }
+  ],
+  {
+    duration:120,
+    fill:"forwards"
   }
+);
 
-  function endCircle(){
-    isPressing = false;
-    if(!cookie.classList.contains("open")) {
-      cookie.style.filter = "";
-    }
-  }
+/* ACTIVAR */
+
+if(progress >= 6){
+
+  activateCookie(
+    cookie,
+    index
+  );
+
+  isPressing = false;
+}
+```
+
+}
+
+/* END */
+
+function endCircle(){
+
+```
+isPressing = false;
+
+if(
+  !cookie.classList.contains("open")
+){
+
+  cookie.style.filter = "";
+}
+```
+
+}
 });
 
 /* ================================= */
@@ -241,38 +480,60 @@ cookieElements.forEach((cookie,index)=>{
 /* ================================= */
 
 function getCookiePos(e,el){
-  const rect = el.getBoundingClientRect();
-  const x = (e.touches ? e.touches[0].clientX : e.clientX) - rect.left - rect.width / 2;
-  const y = (e.touches ? e.touches[0].clientY : e.clientY) - rect.top - rect.height / 2;
-  return {x,y};
+
+const rect =
+el.getBoundingClientRect();
+
+const x =
+(
+e.touches
+? e.touches[0].clientX
+: e.clientX
+)
+
+* rect.left
+* rect.width / 2;
+
+const y =
+(
+e.touches
+? e.touches[0].clientY
+: e.clientY
+)
+
+* rect.top
+* rect.height / 2;
+
+return {x,y};
 }
 
 /* ================================= */
-/* FASE 4 */
-/* ABRIR GALLETITA */
+/* ACTIVAR */
 /* ================================= */
 
 function activateCookie(cookie,index){
-  if(cookie.classList.contains("open")) return;
-  cookie.classList.add("open");
 
-  /* TEXTO */
-  const phrases = [
-    "Dulce energía", "Golden hour", "Stay soft", "Purple soul",
-    "Shine more", "Sweet vibes", "BTS forever", "Enjoy moment"
-  ];
+if(
+cookie.classList.contains("open")
+) return;
 
-  const text = document.createElement("div");
-  text.className = "cookie-text";
-  text.innerText = phrases[index];
-  cookie.appendChild(text);
+cookie.classList.add("open");
 
-  /* ANIMACIÓN */
-  cookie.animate([
-    { transform: "translateY(-50%) scale(1)" },
-    { transform: "translateY(-50%) scale(1.08)" },
-    { transform: "translateY(-50%) scale(1)" }
-  ], {
-    duration: 500
-  });
+cookie.style.filter =
+`     brightness(1.15)
+    drop-shadow(0 0 35px rgba(255,255,255,.45))
+  `;
+
+/* TEXTO */
+
+const text =
+document.createElement("div");
+
+text.className =
+"cookie-text";
+
+text.innerText =
+phrases[index];
+
+cookie.appendChild(text);
 }
