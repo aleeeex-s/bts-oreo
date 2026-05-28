@@ -238,8 +238,8 @@ body::after{
 
   transform:translate(0,-50%);
 
-  width:300px;
-  height:300px;
+width:155px;
+height:155px;
 
   overflow:visible;
 
@@ -384,27 +384,40 @@ body::after{
   transition:transform 0.8s cubic-bezier(.22,1,.36,1);
 }
 
-/* superior */
+/* TOP REAL */
 .top-half{
   z-index:2;
 }
 
-/* inferior */
+/* BOTTOM fake */
 .bottom-half{
   z-index:1;
+
+  transform:
+    translateY(8px)
+    scale(0.98);
+
+  filter:
+    brightness(0.62)
+    contrast(1.05);
+
+  opacity:.95;
 }
 
-/* APERTURA */
+/* APERTURA REAL */
 .cookie.open .top-half{
   transform:
-    translateY(-42px)
-    rotate(-12deg);
+    translateY(-70px)
+    rotate(-18deg)
+    scale(.94);
+
+  opacity:0;
 }
 
 .cookie.open .bottom-half{
   transform:
-    translateY(42px)
-    rotate(12deg);
+    translateY(10px)
+    scale(.98);
 }
 
 /* CREMA */
@@ -414,30 +427,22 @@ body::after{
   left:50%;
   top:50%;
 
-  width:82px;
-  height:82px;
+  width:84px;
+  height:84px;
 
   transform:
     translate(-50%,-50%)
-    scale(0.2);
+    scale(.2);
 
   border-radius:50%;
-
-  background:
-    radial-gradient(
-      circle,
-      #fff7d6 0%,
-      #f3dfa3 70%,
-      #d3b36b 100%
-    );
 
   opacity:0;
 
   z-index:0;
 
   transition:
-    transform 0.6s ease,
-    opacity 0.6s ease;
+    transform .55s ease,
+    opacity .55s ease;
 
   display:flex;
   justify-content:center;
@@ -448,12 +453,54 @@ body::after{
   padding:10px;
 
   font-size:11px;
-  line-height:1.2;
+  line-height:1.15;
 
-  color:#6b4b00;
+  color:#5f3a00;
   font-weight:bold;
+
+  overflow:hidden;
 }
 
+/* CREAM */
+.cream.is-cream{
+  background:
+    radial-gradient(circle at 35% 30%,
+      #fffdf4 0%,
+      #fff2c7 38%,
+      #f0d89d 72%,
+      #c79f57 100%
+    );
+}
+
+/* BROWN SUGAR */
+.cream.is-brown{
+  background:
+    radial-gradient(circle at 35% 30%,
+      #ffe8ba 0%,
+      #efc77f 34%,
+      #cf8f45 68%,
+      #87491f 100%
+    );
+}
+
+/* textura */
+.cream::after{
+  content:"";
+
+  position:absolute;
+  inset:0;
+
+  border-radius:50%;
+
+  background:
+    radial-gradient(circle,
+      rgba(255,255,255,.16) 0 1px,
+      transparent 1px 7px);
+
+  opacity:.22;
+}
+
+/* SHOW */
 .cookie.open .cream{
   opacity:1;
 
