@@ -118,6 +118,7 @@ function updatePack(m) {
 
 /* =========================
    FASE 3 - SPAWN COOKIES
+   Click en pack izquierdo
 ========================= */
 leftPack.addEventListener("click", spawnCookie);
 
@@ -127,20 +128,17 @@ function spawnCookie() {
 
   const cookie = cookieElements[cookieIndex];
 
-  // por las dudas: limpiar pos viejas
+  // Por las dudas, limpiamos pos anteriores
   for (let i = 1; i <= 8; i++) cookie.classList.remove(`pos${i}`);
 
   cookie.classList.add("show");
   cookie.classList.add(`pos${cookieIndex + 1}`);
 
-  // reset escala variable
-  cookie.style.setProperty("--s", "1");
-
   cookieIndex++;
 }
 
 /* =========================
-   FASE 4 - DOM (MITADES + CREMA)
+   FASE 4 - CLICK/TAP PARA ABRIR
 ========================= */
 const phrases = [
   "Dulce energía",
@@ -153,16 +151,31 @@ const phrases = [
   "Enjoy moment",
 ];
 
+// Prepara DOM de cada cookie (mitades + crema) y bind del click
 cookieElements.forEach((cookie, index) => {
   prepareCookieDOM(cookie, index);
-  bindCookieOpenGesture(cookie, index);
+
+  cookie.addEventListener("pointerdown", (e) => {
+    // solo si está visible
+    if (!cookie.classList.contains("show")) return;
+
+    // si ya está abierta, no hacemos nada (o podrías cerrarla si querés)
+    if (cookie.classList.contains("open")) return;
+
+    openCookie(cookie, index);
+
+    // evita "doble tap zoom" / scroll raro en móvil
+    if (e.cancelable) e.preventDefault();
+  });
 });
 
 function prepareCookieDOM(cookie, index) {
+  // Si ya existe, no duplicar
   const hasHalves =
     cookie.querySelector(".cookie-half") && cookie.querySelector(".cream");
   if (hasHalves) return;
 
+  // Intentar encontrar imagen de la galletita
   let imgSrc =
     cookie.dataset.img ||
     cookie.getAttribute("data-img") ||
@@ -178,6 +191,7 @@ function prepareCookieDOM(cookie, index) {
     imgSrc = `url("${imgSrc}")`;
   }
 
+  // Si había <img>, lo quitamos para que no moleste
   const childImg = cookie.querySelector("img");
   if (childImg) childImg.remove();
 
@@ -198,98 +212,15 @@ function prepareCookieDOM(cookie, index) {
   cookie.appendChild(top);
 }
 
-/* =========================
-   FASE 4 - GESTO CIRCULAR
-   (SIN tocar transform)
-========================= */
-function bindCookieOpenGesture(cookie, index) {
-  let pressing = false;
-  let lastAngle = 0;
-  let progress = 0;
-
-  cookie.addEventListener("pointerdown", startCircle);
-  window.addEventListener("pointermove", moveCircle, { passive: false });
-  window.addEventListener("pointerup", endCircle);
-  window.addEventListener("pointercancel", endCircle);
-
-  function startCircle(e) {
-    if (!cookie.classList.contains("show")) return;
-    if (cookie.classList.contains("open")) return;
-
-    pressing = true;
-    progress = 0;
-
-    cookie.classList.add("interacting");
-    cookie.style.setProperty("--s", "1");
-
-    const pos = getCookiePos(e, cookie);
-    lastAngle = Math.atan2(pos.y, pos.x);
-
-    cookie.setPointerCapture?.(e.pointerId);
-  }
-
-  function moveCircle(e) {
-    if (!pressing) return;
-
-    const pos = getCookiePos(e, cookie);
-    const angle = Math.atan2(pos.y, pos.x);
-
-    let delta = angle - lastAngle;
-    if (delta > Math.PI) delta -= Math.PI * 2;
-    if (delta < -Math.PI) delta += Math.PI * 2;
-
-    progress += Math.abs(delta);
-    lastAngle = angle;
-
-    const scale = 1 + Math.min(progress * 0.03, 0.12);
-    cookie.style.setProperty("--s", String(scale));
-
-    if (progress > 6) {
-      activateCookie(cookie, index);
-      pressing = false;
-    }
-
-    if (e.cancelable) e.preventDefault();
-  }
-
-  function endCircle() {
-    if (!pressing) {
-      if (!cookie.classList.contains("open")) {
-        cookie.style.setProperty("--s", "1");
-        cookie.classList.remove("interacting");
-      }
-      return;
-    }
-
-    pressing = false;
-
-    if (!cookie.classList.contains("open")) {
-      cookie.style.setProperty("--s", "1");
-      cookie.classList.remove("interacting");
-    }
-  }
-}
-
-function getCookiePos(e, el) {
-  const rect = el.getBoundingClientRect();
-  const x = e.clientX - rect.left - rect.width / 2;
-  const y = e.clientY - rect.top - rect.height / 2;
-  return { x, y };
-}
-
-function activateCookie(cookie, index) {
-  if (cookie.classList.contains("open")) return;
-
+function openCookie(cookie, index) {
   cookie.classList.add("open");
-  cookie.classList.remove("interacting");
-  cookie.style.setProperty("--s", "1");
 
   const cream = cookie.querySelector(".cream");
   if (cream) cream.textContent = phrases[index] || "";
 
-  // pequeño “pop” con variable
+  // mini pop
   cookie.animate(
-    [{ transform: "scale(1)" }, { transform: "scale(1.06)" }, { transform: "scale(1)" }],
-    { duration: 420, easing: "ease-out" }
+    [{ transform: "" }, { transform: "scale(1.05)" }, { transform: "" }],
+    { duration: 380, easing: "ease-out" }
   );
 }
