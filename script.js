@@ -9,115 +9,89 @@ const rightPack = document.getElementById("rightPack");
 const leftPack = document.querySelector(".left-pack");
 const inside = document.querySelector(".inside");
 
-const cookieElements = document.querySelectorAll(".cookie");
+const cookieElements = Array.from(document.querySelectorAll(".cookie"));
 
-let isDragging = false;
-let startX = 0;
-let move = 0;
 let isOpened = false;
-
 let cookieIndex = 0;
 
-/* LOGIN */
+/* =========================
+   LOGIN
+========================= */
 
 enterBtn.addEventListener("click", checkPassword);
 
-passwordInput.addEventListener("keydown", e => {
-  if(e.key === "Enter"){
-    checkPassword();
-  }
+passwordInput.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") checkPassword();
 });
 
-function checkPassword(){
-
-  if(passwordInput.value.trim().toUpperCase() === "BTSXSIEMPRE"){
-
+function checkPassword() {
+  if (passwordInput.value.trim().toUpperCase() === "BTSXSIEMPRE") {
     loginScreen.classList.add("hide-login");
 
-    setTimeout(()=>{
-
+    setTimeout(() => {
       loginScreen.style.display = "none";
-
       mainScene.classList.remove("hidden");
-
-    },800);
-
-  }else{
-
+    }, 800);
+  } else {
     errorText.innerText = "WRONG PASSWORD";
-
   }
-
 }
 
-/* DRAG */
+/* =========================
+   FASE 3 - ABRIR PACK (DRAG)
+========================= */
 
-rightPack.addEventListener("mousedown", startDrag);
-window.addEventListener("mousemove", drag);
-window.addEventListener("mouseup", stopDrag);
+let dragActive = false;
+let dragStartX = 0;
+let move = 0;
 
-rightPack.addEventListener("touchstart", startDrag, {passive:true});
-window.addEventListener("touchmove", drag, {passive:false});
-window.addEventListener("touchend", stopDrag);
+rightPack.addEventListener("pointerdown", startDrag);
+window.addEventListener("pointermove", drag);
+window.addEventListener("pointerup", stopDrag);
+window.addEventListener("pointercancel", stopDrag);
 
-/* START */
+function startDrag(e) {
+  if (isOpened) return;
 
-function startDrag(e){
-
-  if(isOpened) return;
-
-  isDragging = true;
-
-  startX = getX(e);
+  dragActive = true;
+  dragStartX = e.clientX;
 
   rightPack.style.transition = "none";
+  rightPack.setPointerCapture?.(e.pointerId);
 }
 
-/* MOVE */
+function drag(e) {
+  if (!dragActive) return;
 
-function drag(e){
-
-  if(!isDragging) return;
-
-  move = getX(e) - startX;
-
-  if(move < 0) move = 0;
-  if(move > 60) move = 60;
+  move = e.clientX - dragStartX;
+  if (move < 0) move = 0;
+  if (move > 60) move = 60;
 
   updatePack(move);
 
-  e.preventDefault();
+  // Evita scroll en touch
+  if (e.cancelable) e.preventDefault();
 }
 
-/* END */
+function stopDrag() {
+  if (!dragActive) return;
+  dragActive = false;
 
-function stopDrag(){
-
-  if(!isDragging) return;
-
-  isDragging = false;
-
-  if(move > 28){
-
+  if (move > 28) {
     isOpened = true;
 
-    rightPack.style.transition =
-      "transform 0.18s ease-out";
-
+    rightPack.style.transition = "transform 0.18s ease-out";
     updatePack(60);
 
-    setTimeout(()=>{
-
+    setTimeout(() => {
       rightPack.style.transform = `
         rotateZ(10deg)
         translateX(10px)
         translateY(6px)
       `;
+    }, 120);
 
-    },120);
-
-    setTimeout(()=>{
-
+    setTimeout(() => {
       rightPack.style.transition =
         "transform 2s cubic-bezier(.16,.72,.2,1), opacity 0.4s linear 1.5s";
 
@@ -127,30 +101,18 @@ function stopDrag(){
         translateY(900px)
       `;
 
-      setTimeout(()=>{
-
+      setTimeout(() => {
         rightPack.style.opacity = "0";
         rightPack.style.display = "none";
-
-      },1500);
-
-    },260);
-
-  }else{
-
-    rightPack.style.transition =
-      "transform .35s ease";
-
+      }, 1500);
+    }, 260);
+  } else {
+    rightPack.style.transition = "transform .35s ease";
     updatePack(0);
-
   }
-
 }
 
-/* UPDATE */
-
-function updatePack(m){
-
+function updatePack(m) {
   const rotate = m * -0.15;
 
   rightPack.style.transform = `
@@ -159,187 +121,223 @@ function updatePack(m){
   `;
 
   inside.style.width = `${m * 1.1}px`;
-
-  inside.style.opacity = 0.2 + (m / 120);
+  inside.style.opacity = 0.2 + m / 120;
 }
 
-/* GET X */
-
-function getX(e){
-
-  return e.touches
-    ? e.touches[0].clientX
-    : e.clientX;
-}
-
-/* SPAWN COOKIES */
+/* =========================
+   FASE 3 - SPAWN COOKIES
+   click en pack izquierdo
+========================= */
 
 leftPack.addEventListener("click", spawnCookie);
 
-function spawnCookie(){
-
-  if(!isOpened) return;
-
-  if(cookieIndex >= cookieElements.length) return;
+function spawnCookie() {
+  if (!isOpened) return;
+  if (cookieIndex >= cookieElements.length) return;
 
   const cookie = cookieElements[cookieIndex];
 
   cookie.classList.add("show");
-
   cookie.classList.add(`pos${cookieIndex + 1}`);
+
+  // guardamos transform base ya con posX aplicado
+  requestAnimationFrame(() => {
+    cookie.dataset.baseTransform = getComputedStyle(cookie).transform;
+  });
 
   cookieIndex++;
 }
 
-/* GIRAR GALLETAS */
+/* =========================
+   FASE 4 - PREPARAR ESTRUCTURA
+   (mitades + crema)
+========================= */
 
-cookieElements.forEach((cookie,index)=>{
+const phrases = [
+  "Dulce energía",
+  "Golden hour",
+  "Stay soft",
+  "Purple soul",
+  "Shine more",
+  "Sweet vibes",
+  "BTS forever",
+  "Enjoy moment",
+];
 
-  let isPressing = false;
-  let lastAngle = 0;
-  let progress = 0;
+cookieElements.forEach((cookie, index) => {
+  prepareCookieDOM(cookie, index);
+  bindCookieOpenGesture(cookie, index);
+});
 
-  cookie.addEventListener("mousedown", startCircle);
-  cookie.addEventListener("touchstart", startCircle, {passive:true});
+function prepareCookieDOM(cookie, index) {
+  // Si ya tiene halves/cream, no duplicar
+  const hasHalves =
+    cookie.querySelector(".cookie-half") && cookie.querySelector(".cream");
+  if (hasHalves) return;
 
-  window.addEventListener("mousemove", moveCircle);
-  window.addEventListener("touchmove", moveCircle, {passive:false});
+  // Intentar sacar imagen desde:
+  // 1) data-img
+  // 2) un <img> hijo
+  // 3) background-image del .cookie
+  let imgSrc =
+    cookie.dataset.img ||
+    cookie.getAttribute("data-img") ||
+    (() => {
+      const img = cookie.querySelector("img");
+      return img ? img.src : "";
+    })();
 
-  window.addEventListener("mouseup", endCircle);
-  window.addEventListener("touchend", endCircle);
-
-  function startCircle(e){
-
-    if(!cookie.classList.contains("show")) return;
-
-    if(cookie.classList.contains("open")) return;
-
-    isPressing = true;
-
-    progress = 0;
-
-    const pos = getCookiePos(e,cookie);
-
-    lastAngle = Math.atan2(pos.y,pos.x);
+  if (!imgSrc) {
+    const bg = getComputedStyle(cookie).backgroundImage;
+    // bg puede venir como url("..."), intentamos usarlo tal cual
+    if (bg && bg !== "none") imgSrc = bg;
+  } else {
+    imgSrc = `url("${imgSrc}")`;
   }
 
-function moveCircle(e){
+  // si había <img>, lo sacamos para que no moleste
+  const childImg = cookie.querySelector("img");
+  if (childImg) childImg.remove();
 
-    if(!isPressing) return;
+  const top = document.createElement("div");
+  top.className = "cookie-half top-half";
+  top.style.backgroundImage = imgSrc;
 
-    const pos = getCookiePos(e,cookie);
+  const bottom = document.createElement("div");
+  bottom.className = "cookie-half bottom-half";
+  bottom.style.backgroundImage = imgSrc;
 
-    const angle = Math.atan2(pos.y,pos.x);
+  const cream = document.createElement("div");
+  cream.className = "cream";
+  cream.textContent = phrases[index] || "";
+
+  cookie.appendChild(bottom);
+  cookie.appendChild(cream);
+  cookie.appendChild(top);
+}
+
+/* =========================
+   FASE 4 - GESTO CIRCULAR
+   para abrir galletita
+========================= */
+
+function bindCookieOpenGesture(cookie, index) {
+  let pressing = false;
+  let lastAngle = 0;
+  let progress = 0;
+  let baseTransform = "none";
+
+  cookie.addEventListener("pointerdown", startCircle);
+  window.addEventListener("pointermove", moveCircle, { passive: false });
+  window.addEventListener("pointerup", endCircle);
+  window.addEventListener("pointercancel", endCircle);
+
+  function startCircle(e) {
+    if (!cookie.classList.contains("show")) return;
+    if (cookie.classList.contains("open")) return;
+
+    pressing = true;
+    progress = 0;
+
+    cookie.classList.add("interacting");
+
+    // guardamos el transform base (con posX)
+    baseTransform = cookie.dataset.baseTransform || getComputedStyle(cookie).transform;
+    if (!cookie.dataset.baseTransform) cookie.dataset.baseTransform = baseTransform;
+
+    const pos = getCookiePos(e, cookie);
+    lastAngle = Math.atan2(pos.y, pos.x);
+
+    cookie.setPointerCapture?.(e.pointerId);
+  }
+
+  function moveCircle(e) {
+    if (!pressing) return;
+
+    const pos = getCookiePos(e, cookie);
+    const angle = Math.atan2(pos.y, pos.x);
 
     let delta = angle - lastAngle;
 
-    if(delta > Math.PI){
-      delta -= Math.PI * 2;
-    }
-
-    if(delta < -Math.PI){
-      delta += Math.PI * 2;
-    }
+    if (delta > Math.PI) delta -= Math.PI * 2;
+    if (delta < -Math.PI) delta += Math.PI * 2;
 
     progress += Math.abs(delta);
-
     lastAngle = angle;
 
+    // escala suave mientras gira
     const scale = 1 + Math.min(progress * 0.03, 0.12);
 
-    cookie.style.filter = `
-      brightness(${1 + progress * 0.03})
-      drop-shadow(0 0 25px rgba(255,255,255,0.35))
-    `;
+    // mantenemos el transform base + escala (sin romper tus posX)
+    const bt = baseTransform && baseTransform !== "none" ? baseTransform : "";
+    cookie.style.transform = `${bt} scale(${scale})`;
 
-    // FIX: Aplicamos la escala dinámicamente usando variables de CSS sin romper el translate original
-    cookie.style.transform = window.getComputedStyle(cookie).transform.split('(')[0] === 'matrix' 
-      ? window.getComputedStyle(cookie).transform + ` scale(${scale})` 
-      : "";
-
-    if(progress > 6){
-
-      activateCookie(cookie,index);
-
-      isPressing = false;
+    if (progress > 6) {
+      activateCookie(cookie, index);
+      pressing = false;
     }
 
-    e.preventDefault();
+    if (e.cancelable) e.preventDefault();
   }
 
-  function endCircle(){
+  function endCircle() {
+    if (!pressing) {
+      // igual “normalizamos” por si quedó con escala
+      if (!cookie.classList.contains("open")) {
+        const bt = cookie.dataset.baseTransform && cookie.dataset.baseTransform !== "none"
+          ? cookie.dataset.baseTransform
+          : "";
+        cookie.style.transform = bt;
+        cookie.classList.remove("interacting");
+      }
+      return;
+    }
 
-    isPressing = false;
+    pressing = false;
 
-    if(!cookie.classList.contains("open")){
-      cookie.style.filter = "";
+    if (!cookie.classList.contains("open")) {
+      const bt = cookie.dataset.baseTransform && cookie.dataset.baseTransform !== "none"
+        ? cookie.dataset.baseTransform
+        : "";
+      cookie.style.transform = bt;
+      cookie.classList.remove("interacting");
     }
   }
-
-});
-
-/* POS COOKIE */
-
-function getCookiePos(e,el){
-
-  const rect = el.getBoundingClientRect();
-
-  const x =
-    (e.touches
-      ? e.touches[0].clientX
-      : e.clientX)
-    - rect.left
-    - rect.width / 2;
-
-  const y =
-    (e.touches
-      ? e.touches[0].clientY
-      : e.clientY)
-    - rect.top
-    - rect.height / 2;
-
-  return {x,y};
 }
 
-/* ACTIVAR */
+function getCookiePos(e, el) {
+  const rect = el.getBoundingClientRect();
 
-function activateCookie(cookie,index){
+  const x = e.clientX - rect.left - rect.width / 2;
+  const y = e.clientY - rect.top - rect.height / 2;
 
-  if(cookie.classList.contains("open")) return;
+  return { x, y };
+}
+
+/* =========================
+   ACTIVAR (ABRIR) COOKIE
+========================= */
+
+function activateCookie(cookie, index) {
+  if (cookie.classList.contains("open")) return;
 
   cookie.classList.add("open");
+  cookie.classList.remove("interacting");
 
-  const phrases = [
-    "Dulce energía",
-    "Golden hour",
-    "Stay soft",
-    "Purple soul",
-    "Shine more",
-    "Sweet vibes",
-    "BTS forever",
-    "Enjoy moment"
-  ];
+  // asegurar texto en crema (por si cambiaste phrases)
+  const cream = cookie.querySelector(".cream");
+  if (cream) cream.textContent = phrases[index] || "";
 
-  const text = document.createElement("div");
+  // vuelve a transform base (sin escala)
+  const bt =
+    cookie.dataset.baseTransform && cookie.dataset.baseTransform !== "none"
+      ? cookie.dataset.baseTransform
+      : "";
+  cookie.style.transform = bt;
 
-  text.className = "cookie-text";
-
-  text.innerText = phrases[index];
-
-  cookie.appendChild(text);
-
-  cookie.animate([
-    {
-      transform:"translateY(-50%) scale(1)"
-    },
-    {
-      transform:"translateY(-50%) scale(1.08)"
-    },
-    {
-      transform:"translateY(-50%) scale(1)"
-    }
-  ],{
-    duration:500
-  });
-
+  // mini “pop” (sin romper translate)
+  cookie.animate(
+    [{ transform: `${bt}` }, { transform: `${bt} scale(1.06)` }, { transform: `${bt}` }],
+    { duration: 450, easing: "ease-out" }
+  );
 }
