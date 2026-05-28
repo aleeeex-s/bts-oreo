@@ -204,7 +204,10 @@ function prepareCookieDOM(cookie, index) {
   bottom.style.backgroundImage = imgSrc;
 
   const cream = document.createElement("div");
-  cream.className = "cream";
+  cream.className =
+  index % 2 === 0
+    ? "cream is-cream"
+    : "cream is-brown";
   cream.textContent = phrases[index] || "";
 
   cookie.appendChild(bottom);
