@@ -9,11 +9,12 @@ const mainScene = document.getElementById("mainScene");
 
 enterBtn.addEventListener("click", checkPassword);
 
-passwordInput.addEventListener("keydown", (e)=>{
+passwordInput.addEventListener("keydown", (e) => {
 
   if(e.key === "Enter"){
     checkPassword();
   }
+
 });
 
 function checkPassword(){
@@ -24,13 +25,13 @@ function checkPassword(){
 
     loginScreen.style.opacity = "0";
 
-    setTimeout(()=>{
+    setTimeout(() => {
 
       loginScreen.style.display = "none";
 
       mainScene.classList.remove("hidden");
 
-    },800);
+    }, 800);
 
   }else{
 
@@ -48,7 +49,9 @@ function checkPassword(){
         duration:400
       }
     );
+
   }
+
 }
 
 /* PAQUETE */
@@ -118,7 +121,9 @@ function stopDrag(){
   }else{
 
     updatePack(0);
+
   }
+
 }
 
 function updatePack(move){
