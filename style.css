@@ -31,17 +31,9 @@ body::before{
   position:absolute;
   width:750px;
   height:750px;
-  background:
-    radial-gradient(
-      circle,
-      rgba(130,70,255,0.16),
-      transparent 72%
-    );
-
+  background: radial-gradient(circle, rgba(130,70,255,0.16), transparent 72%);
   filter:blur(90px);
-
   z-index:0;
-
   animation:pulse 6s infinite alternate;
 }
 
@@ -49,24 +41,16 @@ body::before{
 body::after{
   content:"";
   position:absolute;
-
   width:900px;
   height:400px;
-
-  background:
-    radial-gradient(
-      circle,
-      rgba(170,70,255,0.28) 0%,
-      rgba(120,40,255,0.18) 35%,
-      transparent 72%
-    );
-
+  background: radial-gradient(circle,
+    rgba(170,70,255,0.28) 0%,
+    rgba(120,40,255,0.18) 35%,
+    transparent 72%
+  );
   bottom:120px;
-
   filter:blur(75px);
-
   z-index:0;
-
   animation:neonPulse 4s ease-in-out infinite alternate;
 }
 
@@ -74,17 +58,12 @@ body::after{
 .login-screen{
   position:fixed;
   inset:0;
-
   display:flex;
   justify-content:center;
   align-items:center;
-
   z-index:9999;
-
   backdrop-filter:blur(10px);
-
   background:rgba(0,0,0,0.15);
-
   transition:opacity .8s ease;
 }
 
@@ -95,81 +74,53 @@ body::after{
 
 .login-box{
   width:360px;
-
   padding:40px;
-
   border-radius:28px;
-
   background:rgba(255,255,255,0.05);
-
   border:1px solid rgba(255,255,255,0.1);
-
   backdrop-filter:blur(20px);
-
   box-shadow:0 0 40px rgba(130,70,255,0.25);
-
   text-align:center;
 }
 
 .login-box h1{
   color:white;
-
   font-size:38px;
-
   margin-bottom:10px;
-
   letter-spacing:4px;
 }
 
 .login-box p{
   color:rgba(255,255,255,0.7);
-
   margin-bottom:25px;
-
   letter-spacing:2px;
 }
 
 .login-box input{
   width:100%;
-
   padding:16px;
-
   border:none;
   outline:none;
-
   border-radius:16px;
-
   background:rgba(255,255,255,0.08);
-
   color:white;
-
   text-align:center;
-
   margin-bottom:20px;
-
   border:1px solid rgba(180,120,255,0.25);
 }
 
 .login-box button{
   width:100%;
-
   padding:15px;
-
   border:none;
-
   border-radius:16px;
-
-  background:
-    linear-gradient(
-      45deg,
-      rgba(120,70,255,0.9),
-      rgba(180,120,255,0.9)
-    );
-
+  background:linear-gradient(
+    45deg,
+    rgba(120,70,255,0.9),
+    rgba(180,120,255,0.9)
+  );
   color:white;
-
   cursor:pointer;
-
   transition:.25s;
 }
 
@@ -179,42 +130,31 @@ body::after{
 
 #errorText{
   color:#ff4a4a;
-
   display:block;
-
   margin-top:15px;
-
   font-size:14px;
-
   font-weight:bold;
 }
 
 /* ESCENA */
 .scene{
   perspective:1800px;
-
   z-index:2;
-
   transition:opacity .6s ease;
 }
 
 .hidden{
   display:none;
-
   opacity:0;
-
   pointer-events:none;
 }
 
 /* CONTENEDOR */
 .pack-container{
   position:relative;
-
   width:700px;
   height:420px;
-
   overflow:visible;
-
   animation:float 5s ease-in-out infinite;
 }
 
@@ -222,15 +162,10 @@ body::after{
 .pack{
   position:absolute;
   top:0;
-
   height:100%;
-
   background-image:url("oreo-pack.png");
-
   background-size:700px 420px;
-
   background-repeat:no-repeat;
-
   filter:
     drop-shadow(0 20px 35px rgba(0,0,0,0.5))
     drop-shadow(0 0 25px rgba(140,70,255,0.25))
@@ -240,68 +175,48 @@ body::after{
 /* IZQUIERDA */
 .left-pack{
   left:0;
-
   width:646px;
-
   background-position:left center;
-
   z-index:2;
 }
 
 /* DERECHA */
 .right-pack{
   right:0;
-
   width:54px;
-
   background-position:right center;
-
   z-index:4;
-
   cursor:grab;
 }
 
 /* INTERIOR */
 .inside{
   position:absolute;
-
   top:0;
   right:54px;
-
   height:100%;
-
   width:0;
-
   background:#1a0826;
-
   z-index:1;
-
   opacity:0;
 }
 
 /* GALLETAS */
 .cookies{
   position:absolute;
-
   top:50%;
   right:0;
-
   transform:translateY(-50%);
-
   width:300px;
   height:300px;
-
   overflow:visible;
-
   z-index:6;
-
   pointer-events:none;
 }
 
-/* COOKIE */
+/* COOKIE (contenedor de capas) */
 .cookie{
   position:absolute;
-
   width:155px;
   height:155px;
 
@@ -324,10 +239,11 @@ body::after{
     drop-shadow(0 0 14px rgba(140,70,255,0.2));
 
   pointer-events:none;
-
   transform-origin:right center;
-
   overflow:visible;
+
+  /* mejora toque en mobile */
+  touch-action: manipulation;
 }
 
 .cookie.show{
@@ -336,263 +252,81 @@ body::after{
 }
 
 /* POSICIONES */
-.cookie.pos1{
-  transform:
-    translate(-760px,-50%)
-    rotate(-8deg)
-    scale(1);
-}
+.cookie.pos1{ transform: translate(-760px,-50%) rotate(-8deg)  scale(1); }
+.cookie.pos2{ transform: translate(-620px,-50%) rotate(5deg)   scale(1); }
+.cookie.pos3{ transform: translate(-480px,-50%) rotate(-3deg)  scale(1); }
+.cookie.pos4{ transform: translate(-340px,-50%) rotate(4deg)   scale(1); }
+.cookie.pos5{ transform: translate(-200px,-50%) rotate(-6deg)  scale(1); }
+.cookie.pos6{ transform: translate(-60px,-50%)  rotate(7deg)   scale(1); }
+.cookie.pos7{ transform: translate(80px,-50%)   rotate(-5deg)  scale(1); }
+.cookie.pos8{ transform: translate(220px,-50%)  rotate(5deg)   scale(1); }
 
-.cookie.pos2{
-  transform:
-    translate(-620px,-50%)
-    rotate(5deg)
-    scale(1);
-}
+/* =========================
+   NUEVO SISTEMA REALISTA:
+   insideX.png abajo + galletitaX.png arriba
+========================= */
 
-.cookie.pos3{
-  transform:
-    translate(-480px,-50%)
-    rotate(-3deg)
-    scale(1);
-}
-
-.cookie.pos4{
-  transform:
-    translate(-340px,-50%)
-    rotate(4deg)
-    scale(1);
-}
-
-.cookie.pos5{
-  transform:
-    translate(-200px,-50%)
-    rotate(-6deg)
-    scale(1);
-}
-
-.cookie.pos6{
-  transform:
-    translate(-60px,-50%)
-    rotate(7deg)
-    scale(1);
-}
-
-.cookie.pos7{
-  transform:
-    translate(80px,-50%)
-    rotate(-5deg)
-    scale(1);
-}
-
-.cookie.pos8{
-  transform:
-    translate(220px,-50%)
-    rotate(5deg)
-    scale(1);
-}
-
-/* MITADES */
-.cookie-half{
+.cookie-inside,
+.cookie-top{
   position:absolute;
-
   inset:0;
-
   width:100%;
   height:100%;
-
   background-size:contain;
   background-repeat:no-repeat;
   background-position:center;
-
-  transition:
-    transform .8s cubic-bezier(.22,1,.36,1),
-    opacity .7s ease;
-
   pointer-events:none;
+  will-change: transform, opacity;
 }
 
-/* TAPA SUPERIOR */
-.top-half{
-  z-index:3;
-}
-
-/* BASE */
-.bottom-half{
+/* El inside queda abajo */
+.cookie-inside{
   z-index:1;
-
-  transform:
-    translateY(8px)
-    scale(.98);
-
-  filter:
-    brightness(.62)
-    contrast(1.05);
-
-  opacity:.95;
-}
-
-/* APERTURA */
-.cookie.open .top-half{
-  transform:
-    translateY(-70px)
-    rotate(-18deg)
-    scale(.94);
-
-  opacity:0;
-}
-
-/* RELLENO */
-.cream{
-  position:absolute;
-
-  left:50%;
-  top:50%;
-
-  width:84px;
-  height:84px;
-
-  transform:
-    translate(-50%,-50%)
-    scale(.2);
-
-  border-radius:50%;
-
-  opacity:0;
-
-  z-index:2;
-
-  transition:
-    transform .55s ease,
-    opacity .55s ease;
-
-  display:flex;
-  justify-content:center;
-  align-items:center;
-
-  text-align:center;
-
-  padding:10px;
-
-  font-size:11px;
-  line-height:1.15;
-
-  color:#5f3a00;
-
-  font-weight:bold;
-
-  overflow:hidden;
-}
-
-/* CREAM */
-.cream.is-cream{
-  background:
-    radial-gradient(
-      circle at 35% 30%,
-      #fffdf4 0%,
-      #fff2c7 38%,
-      #f0d89d 72%,
-      #c79f57 100%
-    );
-}
-
-/* BROWN */
-.cream.is-brown{
-  background:
-    radial-gradient(
-      circle at 35% 30%,
-      #ffe8ba 0%,
-      #efc77f 34%,
-      #cf8f45 68%,
-      #87491f 100%
-    );
-}
-
-/* TEXTURA */
-.cream::after{
-  content:"";
-
-  position:absolute;
-  inset:0;
-
-  border-radius:50%;
-
-  background:
-    radial-gradient(
-      circle,
-      rgba(255,255,255,.16) 0 1px,
-      transparent 1px 7px
-    );
-
-  opacity:.22;
-}
-
-/* SHOW CREAM */
-.cookie.open .cream{
+  transform: translateY(6px) scale(0.995);
   opacity:1;
-
-  transform:
-    translate(-50%,-50%)
-    scale(1);
 }
 
-/* TEXTO */
-.cookie-text{
-  position:absolute;
+/* La tapa superior arriba */
+.cookie-top{
+  z-index:2;
+  transform: translateY(0) rotate(0) scale(1);
+  opacity:1;
+  transition:
+    transform .75s cubic-bezier(.22,1,.36,1),
+    opacity .55s ease;
+  transform-origin: 80% 30%;
+}
 
-  top:50%;
-  left:50%;
+/* Al abrir: tapa se levanta y desaparece */
+.cookie.open .cookie-top{
+  transform: translateY(-78px) rotate(-18deg) scale(.94);
+  opacity:0;
+}
 
-  transform:translate(-50%,-50%);
+/* (opcional) micro “bounce” del inside al revelar */
+.cookie.open .cookie-inside{
+  animation: insidePop .35s ease-out;
+}
 
-  color:#fff;
-
-  font-weight:bold;
-
-  font-size:14px;
-
-  text-shadow:0 0 8px rgba(0,0,0,0.8);
-
-  pointer-events:none;
-
-  white-space:nowrap;
+@keyframes insidePop{
+  0%   { transform: translateY(6px) scale(0.995); }
+  60%  { transform: translateY(4px) scale(1.02); }
+  100% { transform: translateY(6px) scale(0.995); }
 }
 
 /* ANIMACIONES */
 @keyframes pulse{
-  from{
-    transform:scale(1);
-    opacity:.7;
-  }
-
-  to{
-    transform:scale(1.15);
-    opacity:1;
-  }
+  from{ transform:scale(1); opacity:.7; }
+  to{ transform:scale(1.15); opacity:1; }
 }
 
 @keyframes float{
-  0%{
-    transform:translateY(0);
-  }
-
-  50%{
-    transform:translateY(-8px);
-  }
-
-  100%{
-    transform:translateY(0);
-  }
+  0%{ transform:translateY(0); }
+  50%{ transform:translateY(-8px); }
+  100%{ transform:translateY(0); }
 }
 
 @keyframes neonPulse{
-  0%{
-    transform:scale(1);
-    opacity:.7;
-  }
-
-  100%{
-    transform:scale(1.08);
-    opacity:1;
-  }
+  0%{ transform:scale(1); opacity:.7; }
+  100%{ transform:scale(1.08); opacity:1; }
 }
