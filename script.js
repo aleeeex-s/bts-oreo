@@ -36,7 +36,7 @@ bgMusic.play();
       mainScene.classList.remove("hidden");
     }, 800);
   } else {
-    errorText.innerText = "CLAVE INCORRECTA";
+    errorText.innerText = "BITI CLAVE INCORRECTA";
   }
 }
 
