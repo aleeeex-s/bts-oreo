@@ -18,6 +18,7 @@ let cookieIndex = 0;
    LOGIN
 ========================= */
 enterBtn.addEventListener("click", checkPassword);
+
 passwordInput.addEventListener("keydown", (e) => {
   if (e.key === "Enter") checkPassword();
 });
@@ -128,7 +129,7 @@ function spawnCookie() {
 
   const cookie = cookieElements[cookieIndex];
 
-  // Por las dudas, limpiamos pos anteriores
+  // limpiar pos anteriores por seguridad
   for (let i = 1; i <= 8; i++) cookie.classList.remove(`pos${i}`);
 
   cookie.classList.add("show");
@@ -138,92 +139,46 @@ function spawnCookie() {
 }
 
 /* =========================
-   FASE 4 - CLICK/TAP PARA ABRIR
+   NUEVO: ARMAR CAPAS TOP + INSIDE
+   (sin cream CSS, sin frases JS)
 ========================= */
-const phrases = [
-  "Dulce energía",
-  "Golden hour",
-  "Stay soft",
-  "Purple soul",
-  "Shine more",
-  "Sweet vibes",
-  "BTS forever",
-  "Enjoy moment",
-];
 
-// Prepara DOM de cada cookie (mitades + crema) y bind del click
-cookieElements.forEach((cookie, index) => {
-  prepareCookieDOM(cookie, index);
+cookieElements.forEach((cookie) => {
+  prepareCookieLayers(cookie);
 
   cookie.addEventListener("pointerdown", (e) => {
-    // solo si está visible
     if (!cookie.classList.contains("show")) return;
-
-    // si ya está abierta, no hacemos nada (o podrías cerrarla si querés)
     if (cookie.classList.contains("open")) return;
 
-    openCookie(cookie, index);
+    cookie.classList.add("open");
 
-    // evita "doble tap zoom" / scroll raro en móvil
     if (e.cancelable) e.preventDefault();
   });
 });
 
-function prepareCookieDOM(cookie, index) {
-  // Si ya existe, no duplicar
-  const hasHalves =
-    cookie.querySelector(".cookie-half") && cookie.querySelector(".cream");
-  if (hasHalves) return;
+function prepareCookieLayers(cookie) {
+  // si ya está armado, no duplicar
+  if (cookie.querySelector(".cookie-top") || cookie.querySelector(".cookie-inside")) return;
 
-  // Intentar encontrar imagen de la galletita
-  let imgSrc =
-    cookie.dataset.img ||
-    cookie.getAttribute("data-img") ||
-    (() => {
-      const img = cookie.querySelector("img");
-      return img ? img.src : "";
-    })();
+  // data-img="galletitaX.png"
+  const topFile = cookie.dataset.img;
 
-  if (!imgSrc) {
-    const bg = getComputedStyle(cookie).backgroundImage;
-    if (bg && bg !== "none") imgSrc = bg; // ya viene como url(...)
-  } else {
-    imgSrc = `url("${imgSrc}")`;
-  }
+  // sacar número X desde "galletitaX.png"
+  const match = topFile && topFile.match(/(\d+)/);
+  const num = match ? match[1] : null;
 
-  // Si había <img>, lo quitamos para que no moleste
-  const childImg = cookie.querySelector("img");
-  if (childImg) childImg.remove();
+  // construir insideX.png
+  const insideFile = num ? `inside${num}.png` : "inside1.png";
 
-  const top = document.createElement("div");
-  top.className = "cookie-half top-half";
-  top.style.backgroundImage = imgSrc;
+  const insideLayer = document.createElement("div");
+  insideLayer.className = "cookie-inside";
+  insideLayer.style.backgroundImage = `url("${insideFile}")`;
 
-  const bottom = document.createElement("div");
-  bottom.className = "cookie-half bottom-half";
-  bottom.style.backgroundImage = imgSrc;
+  const topLayer = document.createElement("div");
+  topLayer.className = "cookie-top";
+  topLayer.style.backgroundImage = `url("${topFile}")`;
 
-  const cream = document.createElement("div");
-  cream.className =
-  index % 2 === 0
-    ? "cream is-cream"
-    : "cream is-brown";
-  cream.textContent = phrases[index] || "";
-
-  cookie.appendChild(bottom);
-  cookie.appendChild(cream);
-  cookie.appendChild(top);
-}
-
-function openCookie(cookie, index) {
-  cookie.classList.add("open");
-
-  const cream = cookie.querySelector(".cream");
-  if (cream) cream.textContent = phrases[index] || "";
-
-  // mini pop
-  cookie.animate(
-    [{ transform: "" }, { transform: "scale(1.05)" }, { transform: "" }],
-    { duration: 380, easing: "ease-out" }
-  );
+  // orden: inside abajo, top arriba
+  cookie.appendChild(insideLayer);
+  cookie.appendChild(topLayer);
 }
