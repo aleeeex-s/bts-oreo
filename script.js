@@ -36,7 +36,7 @@ bgMusic.play();
       mainScene.classList.remove("hidden");
     }, 800);
   } else {
-    errorText.innerText = "WRONG PASSWORD";
+    errorText.innerText = "CLAVE INCORRECTA";
   }
 }
 
