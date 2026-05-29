@@ -240,7 +240,10 @@ body::after{
 
   pointer-events:none;
   transform-origin:right center;
-  overflow:visible;
+
+  /* CAMBIO CLAVE: evita que se vea el inside más grande antes de abrir */
+  overflow:hidden;
+  border-radius:50%;
 
   /* mejora toque en mobile */
   touch-action: manipulation;
@@ -279,11 +282,14 @@ body::after{
   will-change: transform, opacity;
 }
 
-/* El inside queda abajo */
+/* El inside queda abajo (OCULTO al inicio) */
 .cookie-inside{
   z-index:1;
   transform: translateY(6px) scale(0.995);
-  opacity:1;
+
+  /* CAMBIO CLAVE: que no se vea antes de abrir */
+  opacity:0;
+  transition: opacity .35s ease;
 }
 
 /* La tapa superior arriba */
@@ -303,8 +309,9 @@ body::after{
   opacity:0;
 }
 
-/* (opcional) micro “bounce” del inside al revelar */
+/* Al abrir: el inside aparece */
 .cookie.open .cookie-inside{
+  opacity:1;
   animation: insidePop .35s ease-out;
 }
 
