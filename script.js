@@ -4,6 +4,7 @@ const errorText = document.getElementById("errorText");
 
 const loginScreen = document.getElementById("loginScreen");
 const mainScene = document.getElementById("mainScene");
+const bgMusic = document.getElementById("bgMusic");
 
 const rightPack = document.getElementById("rightPack");
 const leftPack = document.querySelector(".left-pack");
@@ -25,6 +26,10 @@ passwordInput.addEventListener("keydown", (e) => {
 
 function checkPassword() {
   if (passwordInput.value.trim().toUpperCase() === "BTSXSIEMPRE") {
+
+bgMusic.volume = 0.4;
+bgMusic.play();
+     
     loginScreen.classList.add("hide-login");
     setTimeout(() => {
       loginScreen.style.display = "none";
